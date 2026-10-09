@@ -73,11 +73,6 @@ A frame is deterministic: the same scene, time and size always give the same cel
 | `cmd/mdgl` | the CLI |
 | `MDGL.md` | primer for LLMs (argument lists generated from the checker) |
 
-## Playground and demos
-
-- Playground: _coming soon_ (placeholder: https://enmaq.dev/mdgl)
-- Demo GIF: _coming soon_ (placeholder: `docs/demo.gif`)
-
 ## Implementations
 
 The Go library here is the reference. A second, independent implementation passing the same

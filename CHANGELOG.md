@@ -3,6 +3,11 @@
 All notable changes to MDGL. The format follows [Keep a Changelog](https://keepachangelog.com/);
 0.x versions are unstable and may change the syntax between minor versions.
 
+## [0.1.1] - 2026-10-09
+
+### Fixed
+- README: removed leftover placeholder lines (playground / demo GIF); the demo videos are in the Videos section.
+
 ## [0.1.0] - 2026-10-09
 
 First public release.
