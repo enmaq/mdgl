@@ -1,0 +1,35 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go: ["1.22", "stable"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go }}
+      - name: vet
+        run: go vet ./...
+      - name: test (includes the conformance suite)
+        run: go test ./... -count=1
+      - name: conformance only
+        run: go test . -run Conformance -count=1 -v
+      - name: build the CLI
+        run: go build -o /tmp/mdgl ./cmd/mdgl && /tmp/mdgl check examples/cubes.mdgl
+  fuzz:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+      - name: short parser fuzz
+        run: go test ./parse -run '^$' -fuzz FuzzParse -fuzztime 30s

@@ -1,0 +1,3 @@
+scene width=8 height=5 fallback=end
+actor title = text("AB") at (3,2) anchor=(0,0)
+@0: title.scale(to=2,dur=1)

@@ -1,0 +1,4 @@
+scene width=14 height=10 fallback=end
+actor box = cube(size=8,style=wire) at (3,1)
+@0: box.rotate(z=180,dur=1)
+

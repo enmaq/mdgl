@@ -1,0 +1,4 @@
+mdgl 0.1
+scene width=8 height=1 fallback=end
+actor a = text("e\u0301界") at (0, 0)
+@0: a.type(per_char=1)

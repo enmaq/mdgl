@@ -1,0 +1,8 @@
+scene width=48 height=10 period=6s repeat=infinite fallback=end
+actor head = text("MDGL 0.1: animation in Markdown") at (2, 1) color=yellow
+actor line = text("one line per action, checked before play") at (2, 4)
+actor tag = text("like WebGL, in your terminal") at (2, 7) color=accent
+@0: head.type(per_char=0.04)
+@1.5: line.wipe(in, dur=1.2, ease=ease-out)
+@3: tag.fade(in, dur=1, ease=ease)
+@4.5: tag.blink(times=2, dur=1)

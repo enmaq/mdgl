@@ -1,0 +1,6 @@
+scene width=48 height=16 period=6s repeat=infinite fallback=@1.5
+actor big = cube(size=10,style=wire) at (center, center) color=accent
+actor small = cube(size=4,style=wire) at (right-6, top+3) color=magenta
+@0: big.rotate(x=360, y=360, dur=6, ease=linear)
+@0: small.rotate(z=360, dur=3, ease=ease-in-out)
+@3: small.rotate(y=360, dur=3, ease=ease-in-out)

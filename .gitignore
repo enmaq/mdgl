@@ -1,0 +1,11 @@
+# Internal working files: never part of the public repository.
+# (Ignoring does not untrack: scripts/publish-mdgl.sh in the monorepo refuses to
+# split while any of these are tracked; `git rm --cached` them first.)
+test-grounding-*.log
+test-grounding-*.sha256
+*.sha256
+*.perf
+*.pprof
+NOTES*
+.tldrq/
+/tmp/

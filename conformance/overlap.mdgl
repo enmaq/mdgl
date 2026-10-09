@@ -1,0 +1,4 @@
+scene width=8 height=1 fallback=end
+actor a = text("AB") at (0, 0)
+@0: a.move(to=(2, 0), dur=2)
+@1: a.move(to=(4, 0), dur=1)

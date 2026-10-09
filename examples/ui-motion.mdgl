@@ -1,0 +1,8 @@
+scene width=48 height=10 period=4s repeat=infinite fallback=end
+actor a = rect(10, 3, border=square, title="in") at (left+2, center)
+actor b = rect(10, 3, border=round, title="out") at (right-12, center)
+actor arrow = text("--->") at (center-2, center) color=yellow
+@0: a.slide(in, to=left, dur=1, ease=ease-out)
+@1: arrow.wipe(in, dur=0.8, ease=linear)
+@1.8: b.slide(in, to=right, dur=1, ease=ease-out)
+@3: a.fade(out, dur=1, ease=ease-in)
