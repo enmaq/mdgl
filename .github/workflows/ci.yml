@@ -8,6 +8,9 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: go
     strategy:
       matrix:
         go: ["1.22", "stable"]
@@ -16,6 +19,7 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version: ${{ matrix.go }}
+          cache-dependency-path: go/go.sum
       - name: vet
         run: go vet ./...
       - name: test (includes the conformance suite)
@@ -23,13 +27,45 @@ jobs:
       - name: conformance only
         run: go test . -run Conformance -count=1 -v
       - name: build the CLI
-        run: go build -o /tmp/mdgl ./cmd/mdgl && /tmp/mdgl check examples/cubes.mdgl
+        run: go build -o /tmp/mdgl ./cmd/mdgl && /tmp/mdgl check ../examples/cubes.mdgl
   fuzz:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: go
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
           go-version: stable
+          cache-dependency-path: go/go.sum
       - name: short parser fuzz
         run: go test ./parse -run '^$' -fuzz FuzzParse -fuzztime 30s
+  packages:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: stable
+          cache: npm
+          cache-dependency-path: ts/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: dtolnay/rust-toolchain@stable
+      - name: single-version check
+        run: sh check-version.sh
+      - name: license files present
+        run: for d in rust ts python c; do test -s $d/LICENSE-MIT && test -s $d/LICENSE-APACHE && cmp LICENSE-MIT $d/LICENSE-MIT && cmp LICENSE-APACHE $d/LICENSE-APACHE; done
+      - name: ts tests
+        run: cd ts && npm ci && npm test
+      - name: rust tests
+        run: cd rust && cargo test --quiet
+      - name: c tests
+        run: cmake -S c -B c/build && cmake --build c/build && ./c/build/mdgl_check_test
+      - name: python tests
+        run: cd python && python -m unittest discover -s tests -q

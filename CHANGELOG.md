@@ -3,6 +3,23 @@
 All notable changes to MDGL. The format follows [Keep a Changelog](https://keepachangelog.com/);
 0.x versions are unstable and may change the syntax between minor versions.
 
+## [Unreleased]
+
+## [0.2.0] - 2026-10-10
+
+One shared version for every language, starting here.
+
+### Naming
+- npm: unscoped `mdgl` was refused (E403, name similarity). `@wildneuro/mdgl` 0.2.0 was published first under the maintainer's personal scope and is superseded by the canonical `@enmaq/mdgl`.
+
+### Added
+- Rust, C, TypeScript/JavaScript (one npm package, `@enmaq/mdgl`) and Python packages. These are limited header/resource seed checks, not full parsers or renderers. Each checks: input size, line length, scene header width/height/fallback, key rules, statement order, and actor and action counts.
+- Root `VERSION` file as the single release version source, and `check-version.sh` to verify every package matches it and the newest changelog heading.
+
+### Changed
+- The Go module moved to `go/`; the import path is now `github.com/enmaq/mdgl/go`. Versions v0.1.0 and v0.1.1 at the old root path remain.
+- Go, Rust, C, JavaScript, TypeScript and Python share one version from 0.2.0.
+
 ## [0.1.1] - 2026-10-09
 
 ### Fixed

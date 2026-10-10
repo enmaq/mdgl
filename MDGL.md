@@ -45,7 +45,7 @@ actor box = rect(14, 4) at (center, 3)
 uses dirty terminal cells and DEC 2026, then stops completely when done. Redirect
 output or set `MDGL_REDUCED_MOTION=1` for the fallback frame without animation.
 
-Embedding (module `github.com/enmaq/mdgl`):
+Embedding (module `github.com/enmaq/mdgl/go`):
 
 ```go
 scene, diagnostics := mdgl.Parse(source)

@@ -1,0 +1,49 @@
+{
+  "name": "@enmaq/mdgl",
+  "version": "0.2.0",
+  "description": "MarkdownGL 0.0.1 subset checker (input/line/actor/action limits and scene header only). Not a conformant implementation.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE-MIT",
+    "LICENSE-APACHE"
+  ],
+  "scripts": {
+    "build": "tsc -p .",
+    "prepack": "npm run build",
+    "test:types": "tsc -p test/consumer",
+    "test": "npm run build && npm run test:types && node --test test/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/enmaq/mdgl.git",
+    "directory": "ts"
+  },
+  "homepage": "https://github.com/enmaq/mdgl#readme",
+  "bugs": "https://github.com/enmaq/mdgl/issues",
+  "engines": {
+    "node": ">=16"
+  },
+  "keywords": [
+    "mdgl",
+    "markdown",
+    "animation",
+    "terminal"
+  ],
+  "license": "MIT OR Apache-2.0",
+  "devDependencies": {
+    "typescript": "5.9.3"
+  }
+}

@@ -9,3 +9,7 @@ test-grounding-*.sha256
 NOTES*
 .tldrq/
 /tmp/
+# Python build output (anchored so the Python sdist .gitignore stays minimal)
+python/build/
+python/*.egg-info/
+python/.pytest_cache/

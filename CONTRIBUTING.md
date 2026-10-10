@@ -5,7 +5,7 @@ suite (`conformance/`) are the product; implementations come and go. Second and 
 implementations (Rust, JavaScript/WebGL, ...) are very welcome.
 
 ## Ground rules
-- **Conformance must pass.** `go test ./...` runs every file in `conformance/`. A change that alters
+- **Conformance must pass.** `go test ./...` (from `go/`) runs every file in `conformance/`. A change that alters
   a frame or a diagnostic must change the matching `.expect` / `.err` file in the same commit and
   explain why in the PR.
 - **Syntax changes go through an RFC.** Open a short document in `rfcs/NNNN-title.md` (problem,
@@ -19,6 +19,7 @@ implementations (Rust, JavaScript/WebGL, ...) are very welcome.
 
 ## Checks before a PR
 ```
+cd go
 go vet ./...
 go test ./...
 go test ./parse -run '^$' -fuzz FuzzParse -fuzztime 20s
@@ -28,3 +29,7 @@ go test ./parse -run '^$' -fuzz FuzzParse -fuzztime 20s
 Code is dual-licensed MIT OR Apache-2.0; the specification text (`SPEC.md`) is CC BY 4.0 and the
 conformance suite follows the code licence. By contributing you agree your work is available under
 those terms. Contributions carry no copyright assignment.
+
+## Releasing
+Registry packages (npm, crates.io, PyPI), the first-claim procedure and the Go/C notes are in
+[RELEASING.md](RELEASING.md). Bump the language's manifest version to release it.

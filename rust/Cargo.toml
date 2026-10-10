@@ -1,0 +1,16 @@
+[package]
+name = "mdgl"
+version = "0.2.0"
+edition = "2021"
+rust-version = "1.74"
+description = "MarkdownGL 0.0.1 subset checker (input/line/actor/action limits and scene header only). Not a conformant implementation."
+readme = "README.md"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/enmaq/mdgl"
+homepage = "https://github.com/enmaq/mdgl"
+keywords = ["mdgl", "markdown", "animation", "terminal"]
+include = ["src/**", "README.md", "LICENSE-MIT", "LICENSE-APACHE", "Cargo.toml"]
+
+[lib]
+name = "mdgl"
+path = "src/lib.rs"
