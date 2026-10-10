@@ -62,10 +62,25 @@ test('cell rune', () => {
   assert.equal(U.clusterWidth('1⃣'), 1);   // no VS16: not an emoji keycap
   assert.equal(U.cellRune('1️⃣'), '�');
 });
-test('marks agree with runtime \\p{M}', () => {
-  let diff = 0;
-  for (let c = 0; c < 0x30000; c++) if (U.isMark(c) !== /\p{M}/u.test(String.fromCodePoint(c))) diff++;
-  assert.ok(diff === 0, 'diff ' + diff);
+test('marks table is the pinned Unicode 15.0.0 General_Category M* set', () => {
+  // The pinned profile must not follow the runtime's ICU: Node 22.23 ships Unicode 17, which has
+  // 93 more marks than 15.0 (e.g. U+0897, U+1ACF..). Pin the table itself ...
+  const { MARK } = require('../dist/unicode-tables.js');
+  const sha = require('node:crypto').createHash('sha256').update(MARK.join(',')).digest('hex');
+  assert.equal(sha, 'e62f86b3491d1fc15c0733e6dc86efe05883dca06cf2235995b866e67a4cfa91');
+  // ... and compare with the runtime exactly where the runtime Unicode version has the same marks
+  // (15.0 and 15.1), otherwise require the pinned set to be a subset of the runtime's marks.
+  const [maj, min] = process.versions.unicode.split('.').map(Number);
+  const same = maj === 15 && min <= 1;
+  let missing = 0, extra = 0;
+  for (let c = 0; c < 0x30000; c++) {
+    const rt = /\p{M}/u.test(String.fromCodePoint(c)), t = U.isMark(c);
+    if (t && !rt) missing++;
+    if (rt && !t) extra++;
+  }
+  assert.equal(missing, 0, 'pinned marks absent from runtime');
+  if (same) assert.equal(extra, 0);
+  else assert.ok(extra < 200, 'runtime-only marks: ' + extra);
 });
 
 test('one cluster = one cell: later cells never shift', () => {
