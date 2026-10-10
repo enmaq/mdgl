@@ -1,0 +1,17 @@
+{
+  "source_file": "obs_blink.mdgl",
+  "cols": 6,
+  "rows": 1,
+  "class": "timed",
+  "normative": false,
+  "derivation": "SPEC Time: blink starts visible, alternates each half-cycle, ends visible. times=2 dur=2 -> half-cycle length 2/(2*2)=0.5 s: visible [0,.5), hidden [.5,1), visible [1,1.5), hidden [1.5,2), then visible when finished. Opacity is 0/1 (no blend), so visible keeps fg normal. Intervals are half-open, so t=0.499999999 is visible and t=0.5 hidden. P=2: done only at t>=2. ASSUMES(A3): number of half-cycles = 2*times (SPEC does not define 'times'; consistent with legacy blink.expect).",
+  "frames": [
+    {"time":"0","cells":[[{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":false},
+    {"time":"0.499999999","cells":[[{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":false},
+    {"time":"0.5","cells":[[{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":false},
+    {"time":"0.999999999","cells":[[{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":false},
+    {"time":"1","cells":[[{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":false},
+    {"time":"1.5","cells":[[{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":false},
+    {"time":"2","cells":[[{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":true}
+  ]
+}

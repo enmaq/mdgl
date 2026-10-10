@@ -1,0 +1,10 @@
+{
+  "source_file": "obs_paint_z.mdgl",
+  "cols": 6,
+  "rows": 1,
+  "class": "static",
+  "derivation": "SPEC Graphics pipeline: the compositor sorts by optional integer actor z, higher paints on top, declaration order otherwise. a has z=1 (b defaults to 0), so a paints after b although declared first; column 1 shows B red, not Z. Static: done true.",
+  "frames": [
+    {"time":"0","cells":[[{"r":"A","fg":"red","bg":""},{"r":"B","fg":"red","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":true}
+  ]
+}

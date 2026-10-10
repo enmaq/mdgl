@@ -1,0 +1,13 @@
+{
+  "source_file": "obs_fade_blend_white.mdgl",
+  "cols": 6,
+  "rows": 1,
+  "class": "timed",
+  "normative": false,
+  "derivation": "SPEC Time: linear default easing, opacity = t/2. SPEC: out=source*alpha+destination*(1-alpha) with normal fg white (255,255,255) over default black (0,0,0). t=0.5: alpha .25 -> 255*.25=63.75 -> 64 -> 0x40 -> #404040. t=1: alpha .5 -> 127.5, tie -> half up 128 -> 0x80 -> #808080. t=1.5: alpha .75 -> 191.25 -> 191 -> 0xbf -> #bfbfbf. done false at all three (<2). ASSUMES(G5): round-to-nearest, ties up, lowercase hex; SPEC pins neither rounding mode nor hex case.",
+  "frames": [
+    {"time":"0.5","cells":[[{"r":"A","fg":"#404040","bg":""},{"r":"B","fg":"#404040","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":false},
+    {"time":"1","cells":[[{"r":"A","fg":"#808080","bg":""},{"r":"B","fg":"#808080","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":false},
+    {"time":"1.5","cells":[[{"r":"A","fg":"#bfbfbf","bg":""},{"r":"B","fg":"#bfbfbf","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":false}
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "source_file": "obs_fallback_end.mdgl",
+  "cols": 6,
+  "rows": 1,
+  "class": "timed",
+  "normative": false,
+  "derivation": "SPEC Time: fallback=end samples the exact end state of the simple timeline: move finished, x=4 -> columns 4,5. The request carries fallback:true and no time. PROTOCOL 3.2: done is omitted for fallback frames. ASSUMES(G1): done omitted. A normal frame at t=0 (AB at col 0, done false) shows the two are independent.",
+  "frames": [
+    {"fallback":true,"cells":[[{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""}]]},
+    {"time":"0","cells":[[{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":false}
+  ]
+}

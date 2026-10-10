@@ -1,7 +1,7 @@
 {
   "name": "@enmaq/mdgl",
   "version": "0.2.0",
-  "description": "MarkdownGL 0.0.1 subset checker (input/line/actor/action limits and scene header only). Not a conformant implementation.",
+  "description": "MDGL 0.1 parser, checker, evaluator and terminal-cell renderer (development tree; 0.2.0 on npm is the earlier subset checker).",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
@@ -16,15 +16,19 @@
   },
   "files": [
     "dist",
+    "bin",
     "README.md",
     "LICENSE-MIT",
-    "LICENSE-APACHE"
+    "LICENSE-APACHE",
+    "UNICODE-LICENSE.txt"
   ],
   "scripts": {
     "build": "tsc -p .",
     "prepack": "npm run build",
     "test:types": "tsc -p test/consumer",
-    "test": "npm run build && npm run test:types && node --test test/*.test.js"
+    "test": "npm run build && npm run test:types && node --test test/",
+    "example:js": "npm run build && node examples/render.mjs",
+    "example:ts": "npm run build && tsc -p examples && node .examples/render.js"
   },
   "repository": {
     "type": "git",
@@ -45,5 +49,8 @@
   "license": "MIT OR Apache-2.0",
   "devDependencies": {
     "typescript": "5.9.3"
+  },
+  "bin": {
+    "mdgl-adapter": "bin/mdgl-adapter.js"
   }
 }

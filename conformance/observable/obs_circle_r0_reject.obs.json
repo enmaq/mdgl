@@ -1,0 +1,9 @@
+{
+  "source_file": "obs_circle_r0_reject.mdgl",
+  "cols": 2,
+  "rows": 1,
+  "class": "diagnostic",
+  "normative": false,
+  "derivation": "SPEC Limits and API (circle clarification) states 0<r<=100; r=0 is outside it, so the checker rejects the scene. ASSUMES(G4): the position (actor line 2, column 1) and the wording 'circle radius must be positive and <=100' are the Go message; SPEC pins no wording or position, so the fixture is non-normative.",
+  "diagnostic": {"line": 2, "col": 1, "message": "circle radius must be positive and <=100"}
+}

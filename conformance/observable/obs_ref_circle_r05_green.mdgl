@@ -1,0 +1,2 @@
+scene width=2 height=1 fallback=end
+actor c = circle(0.5) at (0, 0) color=green

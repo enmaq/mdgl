@@ -1,0 +1,12 @@
+{
+ "source_file": "obs_ref_circle_r05_green.mdgl",
+ "cols": 2,
+ "rows": 1,
+ "class": "static",
+ "normative": false,
+ "derivation": "REFERENCE-PROFILE (non-normative, see conformance/REFERENCE_PROFILE.md): shape kind circle(0.5) under the rect/circle profile; not SPEC-derived (G7). SPEC: circle(N) has diameter 2N, so circle(0.5) spans 1x1 cell at (0,0); local dot box [0,1]x[0,3]. Ellipse: 720 chords, vertices (0.5+0.5cos(a),1.5+1.5sin(a)), a=k*2pi/720, k=0..720, start at the rightmost point (1,1.5); each chord sampled with ceil(max(|dx|,|dy|)) steps (min 1), endpoints quantized to 1e-9, dots rounded to nearest integer. Hand arithmetic (throwaway float/Decimal script, no MDGL code) visits all 8 dots (0..1)x(0..3) under half-up, half-even and half-down tie rounding alike, so mask 0xFF = U+28FF in cell (0,0); cell (1,0) is a blank space (fg normal). Painted cell keeps named green at full opacity. Static scene is done at every time.",
+ "frames": [
+  {"time":"0","cells":[[{"r":"⣿","fg":"green","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":true},
+  {"time":"5","cells":[[{"r":"⣿","fg":"green","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":true}
+ ]
+}

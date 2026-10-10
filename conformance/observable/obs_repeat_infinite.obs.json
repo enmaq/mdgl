@@ -1,0 +1,15 @@
+{
+  "source_file": "obs_repeat_infinite.mdgl",
+  "cols": 6,
+  "rows": 1,
+  "class": "repeat",
+  "derivation": "SPEC Time: infinite repeat never finishes, so done is false at every time. Cycles reset at each exact period boundary: t=1 and t=1000 -> local 0 -> col 0; t=0.999999999 -> col 4; t=1000.5 -> local .5 -> x=2; t=86400 -> local 0 -> col 0.",
+  "frames": [
+    {"time":"0","cells":[[{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":false},
+    {"time":"0.999999999","cells":[[{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""}]],"done":false},
+    {"time":"1","cells":[[{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":false},
+    {"time":"1000","cells":[[{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":false},
+    {"time":"1000.5","cells":[[{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":false},
+    {"time":"86400","cells":[[{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":false}
+  ]
+}

@@ -56,6 +56,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+          cache-dependency-path: go/go.sum
       - uses: dtolnay/rust-toolchain@stable
       - name: single-version check
         run: sh check-version.sh
@@ -69,3 +73,47 @@ jobs:
         run: cmake -S c -B c/build && cmake --build c/build && ./c/build/mdgl_check_test
       - name: python tests
         run: cd python && python -m unittest discover -s tests -q
+      - name: example smoke (go)
+        shell: bash
+        run: |
+          set -eo pipefail
+          out=$(cd go && go run ./examples/render -t 4)
+          printf '%s\n' "$out"
+          printf '%s' "$out" | grep -q '[^[:space:]]'
+      - name: example smoke (rust)
+        shell: bash
+        run: |
+          set -eo pipefail
+          out=$(cd rust && cargo run -q --example render -- --at 4)
+          printf '%s\n' "$out"
+          printf '%s' "$out" | grep -q '[^[:space:]]'
+      - name: example smoke (c)
+        shell: bash
+        run: |
+          set -eo pipefail
+          cmake -S c -B c/build
+          cmake --build c/build --target mdgl_render
+          out=$(cd c && ./build/mdgl_render --time 4)
+          printf '%s\n' "$out"
+          printf '%s' "$out" | grep -q '[^[:space:]]'
+      - name: example smoke (js)
+        shell: bash
+        run: |
+          set -eo pipefail
+          out=$(cd ts && npm run --silent example:js -- --time 4)
+          printf '%s\n' "$out"
+          printf '%s' "$out" | grep -q '[^[:space:]]'
+      - name: example smoke (typescript)
+        shell: bash
+        run: |
+          set -eo pipefail
+          out=$(cd ts && npm run --silent example:ts -- --time 4)
+          printf '%s\n' "$out"
+          printf '%s' "$out" | grep -q '[^[:space:]]'
+      - name: example smoke (python)
+        shell: bash
+        run: |
+          set -eo pipefail
+          out=$(cd python && PYTHONPATH=. python examples/render.py --time 4)
+          printf '%s\n' "$out"
+          printf '%s' "$out" | grep -q '[^[:space:]]'

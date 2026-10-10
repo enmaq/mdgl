@@ -1,0 +1,2 @@
+scene width=8 height=1 fallback=end
+actor a = text("日本") $

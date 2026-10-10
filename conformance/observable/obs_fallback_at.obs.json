@@ -1,0 +1,11 @@
+{
+  "source_file": "obs_fallback_at.mdgl",
+  "cols": 6,
+  "rows": 1,
+  "class": "timed",
+  "normative": false,
+  "derivation": "SPEC Time: fallback=@t samples the simple timeline at t (0.5 is within the simple duration 1): linear x=0.5*4=2 -> columns 2,3. done omitted. ASSUMES(G1).",
+  "frames": [
+    {"fallback":true,"cells":[[{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]]}
+  ]
+}

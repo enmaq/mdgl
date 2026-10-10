@@ -1,0 +1,9 @@
+{
+  "source_file": "obs_diag_multibyte_3.mdgl",
+  "cols": 8,
+  "rows": 1,
+  "class": "diagnostic",
+  "normative": false,
+  "derivation": "SPEC Cells: byte columns. Prefix of 16 bytes + two 3-byte runes (22) + '\")' (24) + space (25): '$' offset 25 -> col 26 (rune count would give 20). ASSUMES(G4): message text is Go's.",
+  "diagnostic": {"line": 2, "col": 26, "message": "unexpected character \"$\""}
+}

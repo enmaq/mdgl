@@ -5,6 +5,23 @@ All notable changes to MDGL. The format follows [Keep a Changelog](https://keepa
 
 ## [Unreleased]
 
+The published 0.2.0 packages remain the limited header/resource seed checks (Go excepted); nothing below is in any published package, and `VERSION` is still 0.2.0. All development work below is unreleased. In the final integration (2026-10-10 UTC) all five adapters pass the 83-fixture corpus (63 normative + 20 non-normative) under the bounded protocol-v1 profile: bounded evidence, not a universal SPEC certification.
+
+### Added
+- Shared observable conformance protocol v1 (`conformance/PROTOCOL.md`, `conformance/protocol.schema.json`; status: wire v1 accepted, field set unchanged, implementation evidence gates still open) and a language-neutral runner (`scripts/conformance-runner.py`) with its self-tests (`scripts/test_conformance_runner.py`, using a test-double adapter).
+- Observable fixtures in `conformance/observable/`: 37 `.obs.json` fixtures (colours, `done`, fallback frames, a hand-derived `derivation`). With the 46 legacy fixtures the suite has 83 fixtures: 63 normative and 20 non-normative. All expectations are hand-derived from SPEC.
+- Non-normative reference geometry profile (`conformance/REFERENCE_PROFILE.md`) and three `obs_ref_*` fixtures (rect, circle, coloured cube) that exist only under that profile, which differs from SPEC in the rect/circle dot offset.
+- Go (unreleased): headless conformance adapter `go/cmd/conformance`.
+- Rust (unreleased): parser, checker, evaluator, terminal-cell renderer and the `mdgl-adapter` binary; tests read the shared fixtures directly (`rust/tests/conformance.rs`, `rust/tests/frames.rs`), not through the runner.
+- C (unreleased): parser, checker, evaluator, terminal-cell renderer (`mdgl_render.c`) and the `mdgl_adapter` executable with transport tests.
+- TypeScript (unreleased): parser, checker, evaluator, terminal-cell renderer and the adapter (`bin/mdgl-adapter.js`), compiled by `tsc` to the JavaScript in the same npm package (not an independent implementation); tests read the shared fixtures directly.
+- Python (unreleased): parser, checker, evaluator, terminal-cell renderer and the adapter (`python3 -m mdgl.adapter`); tests read legacy fixtures directly.
+
+- Documentation: project draft `rfcs/0001-mdgl-interoperability-and-registration-roadmap.md` (not an IETF document; no media type registered), `docs/ADOPTER-GUIDE.md` and `docs/ADOPTION-ROADMAP.md`.
+
+### Changed
+- The rect, circle and coloured-cube observable cases are non-normative; normative rect/circle observables remain an open gap.
+
 ## [0.2.0] - 2026-10-10
 
 One shared version for every language, starting here.

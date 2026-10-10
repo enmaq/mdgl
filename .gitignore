@@ -13,3 +13,9 @@ NOTES*
 python/build/
 python/*.egg-info/
 python/.pytest_cache/
+
+# Intentional adapter sources under root-ignored **/bin/** directories.
+!rust/src/bin/
+!rust/src/bin/mdgl-adapter.rs
+!ts/bin/
+!ts/bin/mdgl-adapter.js

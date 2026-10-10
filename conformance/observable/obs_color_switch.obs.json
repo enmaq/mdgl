@@ -1,0 +1,13 @@
+{
+  "source_file": "obs_color_switch.mdgl",
+  "cols": 6,
+  "rows": 1,
+  "class": "timed",
+  "derivation": "SPEC Time: color actions switch at eased progress >= 0.5 (no blending). Linear, dur 1: progress = t. t=0 and t=0.499999999 (progress < .5) keep the starting value normal; t=0.5 (progress exactly .5) is red; t=1 frozen red. P=1: done false before 1, true at 1.",
+  "frames": [
+    {"time":"0","cells":[[{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":false},
+    {"time":"0.499999999","cells":[[{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":false},
+    {"time":"0.5","cells":[[{"r":"A","fg":"red","bg":""},{"r":"B","fg":"red","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":false},
+    {"time":"1","cells":[[{"r":"A","fg":"red","bg":""},{"r":"B","fg":"red","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":true}
+  ]
+}

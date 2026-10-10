@@ -1,134 +1,33 @@
-//! MDGL 0.0.1 -- SUBSET limit/header checker. NOT a conformant MDGL implementation.
+//! MDGL 0.1 parser and checker (scene/actor/action lexing, parsing and semantic checking).
 //!
-//! `check` verifies only: input <= 256 KiB, lines <= 16 KiB, scene header with
-//! width (1..=200), height (1..=60) and fallback, no unknown/duplicate scene
-//! keys, statement order, <= 64 actors, <= 1024 actions. It does NOT parse
-//! actor/action bodies, check timing, references, grammar, UTF-8 validity of
-//! raw bytes (a `&str` is always UTF-8) or rendering. An empty result means
-//! "no limit/header problems found", NOT "valid MDGL". The Go module in
-//! `go/` is the reference. Spec: <https://github.com/enmaq/mdgl/blob/main/SPEC.md>
+//! Development status: parsing and checking follow SPEC.md; the pure evaluator and the
+//! terminal-cell renderer are NOT implemented yet. Grapheme clustering is an approximation
+//! (no Unicode segmentation tables, no wide-glyph table). Spec: <https://github.com/enmaq/mdgl/blob/main/SPEC.md>
 
-/// A single line:col diagnostic.
-#[derive(Debug, PartialEq, Eq)]
-pub struct Diag {
-    pub line: usize,
-    pub col: usize,
-    pub message: String,
+mod checker;
+mod eval;
+mod geometry;
+mod model;
+mod parse;
+mod render;
+mod width_tables;
+
+pub use checker::{check_scene, glyphs, time, COLORS, EASES, VERBS};
+pub use eval::{ease, frame as eval_frame, at as eval_at, ActorState, State};
+pub use render::{cell_glyphs, render, Cell, Frame};
+pub use model::{Action, Actor, Args, Diag, Pos, Scene, Value};
+pub use parse::{parse, MAX_ACTIONS, MAX_ACTORS, MAX_INPUT, MAX_LINE};
+
+/// Parse and check, returning the checked, source-located scene.
+pub fn parse_checked(source: &str) -> Result<Scene, Diag> {
+    let mut scene = parse(source)?;
+    check_scene(&mut scene)?;
+    Ok(scene)
 }
 
-pub const MAX_INPUT: usize = 256 * 1024;
-pub const MAX_LINE: usize = 16384;
-pub const MAX_ACTORS: usize = 64;
-pub const MAX_ACTIONS: usize = 1024;
-
-fn d(line: usize, message: impl Into<String>) -> Vec<Diag> {
-    vec![Diag { line, col: 1, message: message.into() }]
-}
-
-/// Subset check; an empty vec means "no limit/header problems found".
+/// Full parse + check; an empty vec means the source is valid. At most one (the first) diagnostic.
 pub fn check(source: &str) -> Vec<Diag> {
-    if source.len() > MAX_INPUT {
-        return d(1, "input exceeds 256 KiB");
-    }
-    let (mut scene, mut action, mut version) = (false, false, false);
-    let (mut actors, mut actions) = (0usize, 0usize);
-    for (i, line) in source.split('\n').enumerate() {
-        let n = i + 1;
-        if line.len() > MAX_LINE {
-            return d(n, "line exceeds 16 KiB");
-        }
-        let t = line.trim_matches(|c| c == ' ' || c == '\t' || c == '\r');
-        if t.is_empty() || t.starts_with('#') {
-            continue;
-        }
-        let head = if t.starts_with('@') {
-            "@"
-        } else {
-            t.split([' ', '\t']).next().unwrap_or("")
-        };
-        match head {
-            "mdgl" => {
-                if scene || version || t[4..].trim() != "0.1" {
-                    return d(n, "expected initial mdgl 0.1");
-                }
-                version = true;
-            }
-            "scene" => {
-                if scene {
-                    return d(n, "duplicate scene");
-                }
-                scene = true;
-                let out = scene_header(n, &t[5..]);
-                if !out.is_empty() {
-                    return out;
-                }
-            }
-            "actor" => {
-                if !scene {
-                    return d(n, "scene must precede actors");
-                }
-                if action {
-                    return d(n, "actors must precede actions");
-                }
-                actors += 1;
-                if actors > MAX_ACTORS {
-                    return d(n, "actor limit 64 exceeded");
-                }
-            }
-            "@" => {
-                if !scene {
-                    return d(n, "scene must precede actions");
-                }
-                action = true;
-                actions += 1;
-                if actions > MAX_ACTIONS {
-                    return d(n, "action limit 1024 exceeded");
-                }
-            }
-            _ => return d(n, "unsupported statement (expected mdgl, scene, actor or @)"),
-        }
-    }
-    if !scene {
-        return d(1, "missing scene");
-    }
-    Vec::new()
-}
-
-fn scene_header(n: usize, rest: &str) -> Vec<Diag> {
-    let mut seen: Vec<(&str, &str)> = Vec::new();
-    for tok in rest.split([' ', '\t', '\r']).filter(|s| !s.is_empty()) {
-        let (k, v) = match tok.split_once('=') {
-            Some((k, v)) if !k.is_empty() && !v.is_empty() => (k, v),
-            _ => return d(n, format!("malformed scene attribute {tok:?}")),
-        };
-        if !["width", "height", "period", "repeat", "fallback", "fps"].contains(&k) {
-            return d(n, format!("unknown scene attribute {k:?}"));
-        }
-        if seen.iter().any(|(sk, _)| *sk == k) {
-            return d(n, format!("duplicate scene attribute {k:?}"));
-        }
-        seen.push((k, v));
-    }
-    let mut out = Vec::new();
-    for key in ["width", "height", "fallback"] {
-        if !seen.iter().any(|(k, _)| *k == key) {
-            out.push(Diag { line: n, col: 1, message: format!("scene header missing {key}=") });
-        }
-    }
-    if !out.is_empty() {
-        return out;
-    }
-    for (key, max) in [("width", 200u32), ("height", 60)] {
-        let v = seen.iter().find(|(k, _)| *k == key).unwrap().1;
-        let ok = !v.is_empty()
-            && v.bytes().all(|b| b.is_ascii_digit())
-            && v.len() <= 9
-            && matches!(v.parse::<u32>(), Ok(x) if (1..=max).contains(&x));
-        if !ok {
-            return d(n, format!("{key} must be an integer 1..{max}"));
-        }
-    }
-    Vec::new()
+    parse_checked(source).err().into_iter().collect()
 }
 
 #[cfg(test)]

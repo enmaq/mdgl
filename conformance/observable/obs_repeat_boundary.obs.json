@@ -1,0 +1,17 @@
+{
+  "source_file": "obs_repeat_boundary.mdgl",
+  "cols": 6,
+  "rows": 1,
+  "class": "repeat",
+  "derivation": "SPEC Time: each repeat resets properties; interior exact period boundaries are the start of the next cycle; at/after the finite total duration (P*R=2) the last cycle's end is held and Done is true. move x = local t (dur 1 = period). Text origins round to nearest cell. t=0.5 -> x=2. t=0.999999999 -> x=3.999999999 -> rounds to col 4, done false. t=1 -> boundary = next cycle start, x=0. t=1.000000001 -> x~4e-9 -> col 0. t=1.5 -> local .5 -> col 2. t=1.999999999 -> col 4, done false. t=2 -> time>=P*R: held end, col 4, done true; t=3 same.",
+  "frames": [
+    {"time":"0.5","cells":[[{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":false},
+    {"time":"0.999999999","cells":[[{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""}]],"done":false},
+    {"time":"1","cells":[[{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":false},
+    {"time":"1.000000001","cells":[[{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":false},
+    {"time":"1.5","cells":[[{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":false},
+    {"time":"1.999999999","cells":[[{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""}]],"done":false},
+    {"time":"2","cells":[[{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""}]],"done":true},
+    {"time":"3","cells":[[{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""}]],"done":true}
+  ]
+}

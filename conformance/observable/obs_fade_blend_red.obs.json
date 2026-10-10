@@ -1,0 +1,12 @@
+{
+  "source_file": "obs_fade_blend_red.mdgl",
+  "cols": 6,
+  "rows": 1,
+  "class": "timed",
+  "normative": false,
+  "derivation": "SPEC Time/Colors: named RGB primaries are full-intensity, so red = (255,0,0); alpha=t/2 over black. t=0.5: alpha .25 -> (63.75,0,0) -> (64,0,0) -> #400000. t=1.5: alpha .75 -> (191.25,0,0) -> (191,0,0) -> #bf0000. done false. ASSUMES(G5): round to nearest and lowercase hex; ASSUMES red=(255,0,0) (SPEC says only 'full-intensity').",
+  "frames": [
+    {"time":"0.5","cells":[[{"r":"A","fg":"#400000","bg":""},{"r":"B","fg":"#400000","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":false},
+    {"time":"1.5","cells":[[{"r":"A","fg":"#bf0000","bg":""},{"r":"B","fg":"#bf0000","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":false}
+  ]
+}

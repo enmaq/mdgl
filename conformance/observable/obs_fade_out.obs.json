@@ -1,0 +1,12 @@
+{
+  "source_file": "obs_fade_out.mdgl",
+  "cols": 6,
+  "rows": 1,
+  "class": "timed",
+  "derivation": "SPEC Time: fade-out starts at one, so at t=0 opacity is exactly 1 and the named colour cyan is preserved (SPEC Cells: named Color at full opacity); done false (0<2). At t=2 opacity is 0 = transparent, all cells are normal spaces, and the end is frozen so t=9 is identical; done true for t>=2.",
+  "frames": [
+    {"time":"0","cells":[[{"r":"A","fg":"cyan","bg":""},{"r":"B","fg":"cyan","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":false},
+    {"time":"2","cells":[[{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":true},
+    {"time":"9","cells":[[{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":true}
+  ]
+}

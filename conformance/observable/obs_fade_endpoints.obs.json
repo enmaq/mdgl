@@ -1,0 +1,12 @@
+{
+  "source_file": "obs_fade_endpoints.mdgl",
+  "cols": 6,
+  "rows": 1,
+  "class": "timed",
+  "derivation": "SPEC Time: fade-in starts at zero opacity, zero opacity is transparent so every cell is a normal space at t=0; simple duration P=2 (greatest action end), repeat 1, done = time>=2. At t=2 the final value (opacity 1) is frozen and held; full opacity keeps the named colour 'normal' (SPEC Cells); at t=7 still held, done stays true. (No mid-fade time is used here to avoid the blend; see obs_fade_blend_*.)",
+  "frames": [
+    {"time":"0","cells":[[{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":false},
+    {"time":"2","cells":[[{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":true},
+    {"time":"7","cells":[[{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":true}
+  ]
+}

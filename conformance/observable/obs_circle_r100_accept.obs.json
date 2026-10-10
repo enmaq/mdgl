@@ -1,0 +1,11 @@
+{
+  "source_file": "obs_circle_r100_accept.mdgl",
+  "cols": 2,
+  "rows": 1,
+  "class": "static",
+  "derivation": "SPEC Limits and API (circle clarification): circle(r) is valid for 0<r<=100 (diameter <=200), so r=100 is accepted and the scene plays. Coordinates are bounded to +-10000, so (5000,5000) is legal; the actor's top-left bounding box is far outside the 2x1 stage and SPEC Cells 'Clipping is to stage bounds' leaves no painted cell (this avoids the dot raster of the circle, which SPEC does not fix, G7). Both cells are therefore the unpainted default: normal space, fg normal, bg '' (as in obs_static_default). Static scene: done true at every time.",
+  "frames": [
+    {"time":"0","cells":[[{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":true},
+    {"time":"5","cells":[[{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":true}
+  ]
+}

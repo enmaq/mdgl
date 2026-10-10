@@ -1,0 +1,11 @@
+{
+  "source_file": "obs_fallback_start.mdgl",
+  "cols": 6,
+  "rows": 1,
+  "class": "timed",
+  "normative": false,
+  "derivation": "SPEC Time: fallback=start samples the start of the simple timeline (t=0): x=0 -> AB at columns 0,1. done omitted. ASSUMES(G1).",
+  "frames": [
+    {"fallback":true,"cells":[[{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]]}
+  ]
+}

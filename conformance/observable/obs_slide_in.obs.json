@@ -1,0 +1,12 @@
+{
+  "source_file": "obs_slide_in.mdgl",
+  "cols": 6,
+  "rows": 1,
+  "class": "timed",
+  "derivation": "SPEC Geometry: slide-in starts at the outside edge (-actor size) and ends at its current origin; text AB has size 2 so x runs -2 -> 0 linearly. t=0: x=-2, A at col -2, B at col -1, both clipped -> blank. t=1: x=-1 -> A at col -1 clipped, B at col 0 -> 'B'. t=2: x=0 -> AB, done true (P=2). Only integer positions are sampled (half-cell ties avoided).",
+  "frames": [
+    {"time":"0","cells":[[{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":false},
+    {"time":"1","cells":[[{"r":"B","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":false},
+    {"time":"2","cells":[[{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":true}
+  ]
+}

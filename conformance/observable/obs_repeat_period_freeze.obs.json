@@ -1,0 +1,14 @@
+{
+  "source_file": "obs_repeat_period_freeze.mdgl",
+  "cols": 6,
+  "rows": 1,
+  "class": "repeat",
+  "derivation": "SPEC Time: explicit period 2 is the simple duration (greater than the action end 1); each action freezes its final value until the cycle resets; total = P*R = 4. t=1.5: move finished and frozen, x=4 -> col 4. t=2: interior boundary = next cycle start, reset to x=0. t=3: local 1 -> x=4. t=3.999999999: still cycle 2, col 4, done false. t=4: time>=4, held end, done true.",
+  "frames": [
+    {"time":"1.5","cells":[[{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""}]],"done":false},
+    {"time":"2","cells":[[{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":false},
+    {"time":"3","cells":[[{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""}]],"done":false},
+    {"time":"3.999999999","cells":[[{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""}]],"done":false},
+    {"time":"4","cells":[[{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""}]],"done":true}
+  ]
+}

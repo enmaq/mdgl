@@ -1,0 +1,10 @@
+{
+  "source_file": "obs_grapheme_combining.mdgl",
+  "cols": 6,
+  "rows": 1,
+  "class": "static",
+  "derivation": "SPEC Cells: one extended grapheme consumes one cell; the first non-mark rune is emitted and combining suffixes are omitted. 'e'+U+0301 is one grapheme -> 'e' at column 0; 'B' at column 1 (Go escape \\u0301 in the string). Static: done true.",
+  "frames": [
+    {"time":"0","cells":[[{"r":"e","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":true}
+  ]
+}

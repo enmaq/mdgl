@@ -3,14 +3,21 @@ name = "mdgl"
 version = "0.2.0"
 edition = "2021"
 rust-version = "1.74"
-description = "MarkdownGL 0.0.1 subset checker (input/line/actor/action limits and scene header only). Not a conformant implementation."
+description = "MarkdownGL 0.1 parser and checker; the development tree also has an evaluator, renderer and protocol adapter (unreleased)."
 readme = "README.md"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/enmaq/mdgl"
 homepage = "https://github.com/enmaq/mdgl"
 keywords = ["mdgl", "markdown", "animation", "terminal"]
-include = ["src/**", "README.md", "LICENSE-MIT", "LICENSE-APACHE", "Cargo.toml"]
+include = ["src/**", "examples/**", "scripts/**", "README.md", "LICENSE-MIT", "LICENSE-APACHE", "LICENSE-UNISEG", "Cargo.toml"]
 
 [lib]
 name = "mdgl"
 path = "src/lib.rs"
+
+[dependencies]
+# Pinned: UNICODE_VERSION (15, 0, 0) in tables.rs, the reference profile of Go uniseg v0.4.7. MIT OR Apache-2.0.
+unicode-segmentation = "=1.10.1"
+
+[dev-dependencies]
+serde_json = "=1.0.140"

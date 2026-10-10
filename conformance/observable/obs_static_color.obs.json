@@ -1,0 +1,11 @@
+{
+  "source_file": "obs_static_color.mdgl",
+  "cols": 6,
+  "rows": 1,
+  "class": "static",
+  "derivation": "SPEC Cells: cells preserve named Color at full opacity; initialised cells are normal-coloured spaces; static scenes are immediately done (P=0). text AB at layout (0,0) occupies columns 0,1 in red; columns 2..5 stay normal spaces with default bg ''. done is true at every time.",
+  "frames": [
+    {"time":"0","cells":[[{"r":"A","fg":"red","bg":""},{"r":"B","fg":"red","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":true},
+    {"time":"5","cells":[[{"r":"A","fg":"red","bg":""},{"r":"B","fg":"red","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":true}
+  ]
+}

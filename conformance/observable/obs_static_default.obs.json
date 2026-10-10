@@ -1,0 +1,11 @@
+{
+  "source_file": "obs_static_default.mdgl",
+  "cols": 4,
+  "rows": 1,
+  "class": "static",
+  "derivation": "SPEC Colors/Cells: an actor without color keeps color normal (SPEC: normal foreground is white, named value is kept as 'normal' at full opacity). Layout (1,0) addresses the top-left bounding box so A,B sit in columns 1,2; columns 0 and 3 are normal spaces; bg is '' (default black). Static: done true.",
+  "frames": [
+    {"time":"0","cells":[[{"r":" ","fg":"normal","bg":""},{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":true},
+    {"time":"1.5","cells":[[{"r":" ","fg":"normal","bg":""},{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":true}
+  ]
+}

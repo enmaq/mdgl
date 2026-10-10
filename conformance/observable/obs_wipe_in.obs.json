@@ -1,0 +1,13 @@
+{
+  "source_file": "obs_wipe_in.mdgl",
+  "cols": 6,
+  "rows": 1,
+  "class": "timed",
+  "normative": false,
+  "derivation": "SPEC Time: wipe-in starts unrevealed and ends fully revealed; linear over dur=2. t=0 nothing; t=2 AB and done true (P=2). At t=1 the reveal fraction is exactly .5 of 2 clusters = 1 cluster, shown as 'A'. ASSUMES(A2): reveal runs left to right and by whole clusters (SPEC gives neither direction nor quantisation; consistent with legacy wipe.expect).",
+  "frames": [
+    {"time":"0","cells":[[{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":false},
+    {"time":"1","cells":[[{"r":"A","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":false},
+    {"time":"2","cells":[[{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":true}
+  ]
+}

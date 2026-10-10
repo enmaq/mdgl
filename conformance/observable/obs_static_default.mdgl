@@ -1,0 +1,2 @@
+scene width=4 height=1 fallback=end
+actor a = text("AB") at (1, 0)

@@ -1,0 +1,10 @@
+{
+  "source_file": "obs_paint_order.mdgl",
+  "cols": 6,
+  "rows": 1,
+  "class": "static",
+  "derivation": "SPEC Cells: actors paint in declaration order, later nonblank pixels on top. a paints A,B at columns 0,1; b is declared later and paints Z at column 1, replacing B. Result: A red, Z green. Colours stay named at full opacity. Static: done true.",
+  "frames": [
+    {"time":"0","cells":[[{"r":"A","fg":"red","bg":""},{"r":"Z","fg":"green","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":true}
+  ]
+}

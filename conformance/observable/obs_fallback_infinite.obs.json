@@ -1,0 +1,11 @@
+{
+  "source_file": "obs_fallback_infinite.mdgl",
+  "cols": 6,
+  "rows": 1,
+  "class": "timed",
+  "normative": false,
+  "derivation": "SPEC Time: fallback samples the simple timeline without repeat, and 'End means the exact end state, including for infinite scenes': x=4 -> columns 4,5 (not a cycle-dependent value). done omitted. ASSUMES(G1).",
+  "frames": [
+    {"fallback":true,"cells":[[{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""}]]}
+  ]
+}

@@ -75,9 +75,18 @@ Re-running the job completes it: the script verifies that an existing version ha
 artifacts and skips it, and uploads the missing ones. A version that exists with different
 content is a collision and fails; bump the version.
 
-A push that does not change `VERSION` but touches shared source re-runs the cohort, which
-verifies and skips identical existing artifacts. Changed content without a version bump fails and
-asks for a bump.
+A push that does not change `VERSION` but touches shared source re-runs the cohort. In declared
+release mode (see below) the cohort verifies and skips identical existing artifacts, and changed
+content without a version bump fails and asks for a bump. While `## [Unreleased]` has content the
+push routes to development mode instead, which makes no such registry comparison.
+
+Development vs release: while `CHANGELOG.md` has any content under `## [Unreleased]` the cohort
+job (`MDGL_MODE=auto`, also the script default) runs in development mode: it builds, tests and
+runs the privacy gate, makes no MDGL release metadata or Go tag probes and uploads nothing
+(downloading build dependencies is allowed), and records `cohort_status: development`. A release is
+declared by moving the Unreleased body under a dated `## [X.Y.Z] - YYYY-MM-DD` heading (a valid
+calendar date, nothing after it), equal to `VERSION`, in the commit that bumps `VERSION`; an unclear
+state fails, and `MDGL_MODE=release` never overrides unreleased content.
 
 Release record: every run writes `release-record.json` and `release-record.txt` (version,
 source SHA256 manifest, artifact checksums, per-registry outcomes, Go and C entries). They

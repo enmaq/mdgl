@@ -1,0 +1,9 @@
+{
+  "source_file": "obs_diag_multibyte_2.mdgl",
+  "cols": 8,
+  "rows": 1,
+  "class": "diagnostic",
+  "normative": false,
+  "derivation": "SPEC Cells: diagnostic columns are one-based UTF-8 byte columns. Line 2 prefix 'actor a = text(\"' is 16 bytes, 'é' is 2 bytes (18), '\")' 2 more (20) and a space (21): '$' has byte offset 21 -> col 22 (a rune count would give 21). ASSUMES(G4): first diagnostic message is Go's 'unexpected character \"$\"' (SPEC pins no wording).",
+  "diagnostic": {"line": 2, "col": 22, "message": "unexpected character \"$\""}
+}

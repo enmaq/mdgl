@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/enmaq/mdgl/conformance/protocol.schema.json",
+  "title": "MDGL conformance protocol v1 (one JSON value per line)",
+  "$comment": "x-binding: validate a frame success response against $defs/frameFallbackOk iff the request had fallback:true, else against $defs/frameOk; a mismatch is a transport failure (PROTOCOL.md 3.2).",
+  "x-binding": { "fallbackTrue": "#/$defs/frameFallbackOk", "otherwise": "#/$defs/frameOk" },
+  "oneOf": [
+    { "$ref": "#/$defs/request" },
+    { "$ref": "#/$defs/response" }
+  ],
+  "$defs": {
+    "id": { "type": "string" },
+    "ns": { "type": "number", "multipleOf": 1, "minimum": 0, "maximum": 9007199254740991, "description": "mathematical integer 0..2^53-1; 1.0 and 1e9 are valid, 1.5 is not" },
+    "diagnostic": {
+      "type": "object",
+      "required": ["line", "col", "message"],
+      "additionalProperties": false,
+      "properties": {
+        "line": { "type": "integer", "minimum": 1 },
+        "col": { "type": "integer", "minimum": 1, "description": "one-based, counted in UTF-8 bytes" },
+        "message": { "type": "string" }
+      }
+    },
+    "color": {
+      "type": "string",
+      "pattern": "^(normal|black|red|green|yellow|blue|magenta|cyan|white|accent|#[0-9a-f]{6})$"
+    },
+    "bgcolor": {
+      "type": "string",
+      "pattern": "^(|normal|black|red|green|yellow|blue|magenta|cyan|white|accent|#[0-9a-f]{6})$"
+    },
+    "cell": {
+      "type": "object",
+      "required": ["r", "fg", "bg"],
+      "additionalProperties": false,
+      "properties": {
+        "r": { "type": "string", "minLength": 1, "maxLength": 4, "description": "exactly one Unicode scalar value" },
+        "fg": { "$ref": "#/$defs/color" },
+        "bg": { "$ref": "#/$defs/bgcolor" }
+      }
+    },
+    "request": {
+      "type": "object",
+      "required": ["v", "id", "op", "source"],
+      "properties": {
+        "v": { "const": 1 },
+        "id": { "$ref": "#/$defs/id" },
+        "op": { "enum": ["check", "frame"] },
+        "source": { "type": "string" },
+        "time_ns": { "$ref": "#/$defs/ns" },
+        "width": { "type": "integer", "minimum": 1, "maximum": 200 },
+        "height": { "type": "integer", "minimum": 1, "maximum": 60 },
+        "fallback": { "type": "boolean" }
+      },
+      "oneOf": [
+        { "properties": { "op": { "const": "check" } } },
+        {
+          "properties": { "op": { "const": "frame" } },
+          "required": ["width", "height"],
+          "oneOf": [
+            { "required": ["time_ns"] },
+            { "properties": { "fallback": { "const": true } }, "required": ["fallback"] }
+          ]
+        }
+      ]
+    },
+    "response": {
+      "type": "object",
+      "required": ["v", "id", "ok"],
+      "oneOf": [
+        { "$ref": "#/$defs/checkOk" },
+        { "$ref": "#/$defs/frameOk" },
+        { "$ref": "#/$defs/frameFallbackOk" },
+        { "$ref": "#/$defs/failure" }
+      ]
+    },
+    "checkOk": {
+      "type": "object",
+      "required": ["v", "id", "ok", "diagnostics"],
+      "additionalProperties": false,
+      "properties": {
+        "v": { "const": 1 },
+        "id": { "$ref": "#/$defs/id" },
+        "ok": { "const": true },
+        "diagnostics": { "type": "array", "items": { "$ref": "#/$defs/diagnostic" } }
+      }
+    },
+    "frameFallbackOk": {
+      "description": "success response to a frame request with fallback:true: identical to frameOk but WITHOUT done (the request is not visible to the schema; the rule is stated in PROTOCOL.md 3.2)",
+      "type": "object",
+      "required": ["v", "id", "ok", "width", "height", "cells"],
+      "additionalProperties": false,
+      "properties": {
+        "v": { "const": 1 },
+        "id": { "$ref": "#/$defs/id" },
+        "ok": { "const": true },
+        "width": { "type": "integer", "minimum": 1, "maximum": 200 },
+        "height": { "type": "integer", "minimum": 1, "maximum": 60 },
+        "cells": {
+          "type": "array",
+          "items": { "type": "array", "items": { "$ref": "#/$defs/cell" } }
+        }
+      }
+    },
+    "frameOk": {
+      "description": "success response to a frame request with fallback false or absent: done is required",
+      "type": "object",
+      "required": ["v", "id", "ok", "width", "height", "cells", "done"],
+      "additionalProperties": false,
+      "properties": {
+        "v": { "const": 1 },
+        "id": { "$ref": "#/$defs/id" },
+        "ok": { "const": true },
+        "width": { "type": "integer", "minimum": 1, "maximum": 200 },
+        "height": { "type": "integer", "minimum": 1, "maximum": 60 },
+        "cells": {
+          "type": "array",
+          "items": { "type": "array", "items": { "$ref": "#/$defs/cell" } }
+        },
+        "done": { "type": "boolean" }
+      }
+    },
+    "failure": {
+      "type": "object",
+      "required": ["v", "id", "ok", "error"],
+      "additionalProperties": false,
+      "properties": {
+        "v": { "const": 1 },
+        "id": { "oneOf": [{ "$ref": "#/$defs/id" }, { "type": "null" }] },
+        "ok": { "const": false },
+        "error": {
+          "type": "object",
+          "required": ["code", "message"],
+          "additionalProperties": false,
+          "properties": {
+            "code": { "enum": ["bad_request", "unsupported_version", "invalid_source", "internal"] },
+            "message": { "type": "string" },
+            "diagnostics": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/diagnostic" } }
+          },
+          "if": { "properties": { "code": { "const": "invalid_source" } } },
+          "then": { "required": ["diagnostics"] }
+        }
+      }
+    }
+  }
+}

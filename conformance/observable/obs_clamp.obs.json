@@ -1,0 +1,11 @@
+{
+  "source_file": "obs_clamp.mdgl",
+  "cols": 20,
+  "rows": 5,
+  "class": "static",
+  "normative": false,
+  "derivation": "PROTOCOL 3.2/G2: the request asks for 20x5 but the scene is 6x1, so the response is min(request, scene) = 6x1 with one row of 6 cells: AB normal then four spaces. Static: done true. ASSUMES(G2): clamping is protocol-defined, not SPEC.",
+  "frames": [
+    {"time":"0","cells":[[{"r":"A","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":true}
+  ]
+}

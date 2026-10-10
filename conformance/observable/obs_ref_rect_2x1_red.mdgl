@@ -1,0 +1,2 @@
+scene width=4 height=2 fallback=end
+actor r = rect(2, 1) at (1, 0) color=red

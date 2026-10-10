@@ -54,10 +54,19 @@ func Parse(source string) (*Scene, []Diag) {
 	return &Scene{Period: parsed.Period, Fallback: fallback, Width: parsed.Width, Height: parsed.Height, FPS: parsed.FPS, scene: parsed}, nil
 }
 func (scene *Scene) Frame(time float64, cols, rows int) Cells {
+	frame, _ := scene.FrameWithDone(time, cols, rows)
+	return frame
+}
+
+// FrameWithDone returns the rendered frame and the evaluator's completion
+// state for the same absolute time. Frame remains the cells-only convenience
+// API for existing callers.
+func (scene *Scene) FrameWithDone(time float64, cols, rows int) (Cells, bool) {
 	if scene == nil || scene.scene == nil {
-		return nil
+		return nil, false
 	}
-	return cells.Render(eval.Frame(scene.scene, time), min(cols, scene.scene.Width), min(rows, scene.scene.Height))
+	state := eval.Frame(scene.scene, time)
+	return cells.Render(state, min(cols, scene.scene.Width), min(rows, scene.scene.Height)), state.Done
 }
 func (scene *Scene) FallbackFrame(cols, rows int) Cells {
 	if scene == nil || scene.scene == nil {

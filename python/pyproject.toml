@@ -5,11 +5,11 @@ build-backend = "hatchling.build"
 [project]
 name = "mdgl"
 version = "0.2.0"
-description = "MarkdownGL 0.0.1 subset checker (input/line/actor/action limits and scene header only). Not a conformant implementation."
+description = "MarkdownGL checker; the development tree also has a parser, evaluator, terminal renderer and protocol adapter (unreleased, not independently validated)."
 readme = "README.md"
 requires-python = ">=3.9"
 license = "MIT OR Apache-2.0"
-license-files = ["LICENSE-MIT", "LICENSE-APACHE"]
+license-files = ["LICENSE-MIT", "LICENSE-APACHE", "LICENSE-UNISEG.txt"]
 keywords = ["mdgl", "markdown", "animation", "terminal"]
 classifiers = [
   "Development Status :: 2 - Pre-Alpha",
@@ -25,4 +25,4 @@ Specification = "https://github.com/enmaq/mdgl/blob/main/SPEC.md"
 packages = ["mdgl"]
 
 [tool.hatch.build.targets.sdist]
-include = ["mdgl/**/*.py", "tests/*.py", "README.md", "LICENSE-MIT", "LICENSE-APACHE", "pyproject.toml"]
+include = ["mdgl/**/*.py", "tests/*.py", "examples/*.py", "README.md", "LICENSE-MIT", "LICENSE-APACHE", "LICENSE-UNISEG.txt", "pyproject.toml"]

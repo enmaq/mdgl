@@ -41,8 +41,11 @@ and reduced-motion users.
 ## Install and use
 
 ```
-# Until the first shared release, the published CLI remains the old root module:
-go install github.com/enmaq/mdgl/cmd/mdgl@v0.1.1
+# The Go module github.com/enmaq/mdgl/go is tagged v0.2.0 (nested tag go/v0.2.0):
+go install github.com/enmaq/mdgl/go/cmd/mdgl@v0.2.0
+
+# Historical: the old root-module CLI (v0.1.1) predates the move and is superseded:
+# go install github.com/enmaq/mdgl/cmd/mdgl@v0.1.1
 
 # For local development in this monorepo, install from the moved module:
 cd v/mdgl/go
@@ -55,9 +58,8 @@ mdgl play scene.mdgl                    # animate in the terminal (Ctrl+C stops)
 
 The npm package `@enmaq/mdgl` (`npm install @enmaq/mdgl`), the crates.io crate `mdgl`
 (`cargo add mdgl`) and the PyPI package `mdgl` (`pip install mdgl`) are published at `0.2.0`.
-Go is imported from the module path `github.com/enmaq/mdgl/go`; its release tag is a separate
-step. Once tagged, install the nested module with
-`go install github.com/enmaq/mdgl/go/cmd/mdgl@v0.2.0`.
+Go is imported from the module path `github.com/enmaq/mdgl/go`, tagged `v0.2.0` (nested tag
+`go/v0.2.0`); install its CLI with `go install github.com/enmaq/mdgl/go/cmd/mdgl@v0.2.0`.
 
 Ready-made scenes are in [`examples/`](examples/). `MDGL.md` is a one-page primer for LLMs.
 
@@ -86,7 +88,9 @@ A frame is deterministic: the same scene, time and size always give the same cel
 ## Implementations
 
 The Go library here is the reference. A second, independent implementation passing the same
-conformance suite is what makes MDGL a standard: see [CONTRIBUTING.md](CONTRIBUTING.md).
+conformance suite is what makes MDGL a standard: see [CONTRIBUTING.md](CONTRIBUTING.md), the
+[adopter guide](docs/ADOPTER-GUIDE.md), the [adoption roadmap](docs/ADOPTION-ROADMAP.md) and the project draft
+[RFC 0001](rfcs/0001-mdgl-interoperability-and-registration-roadmap.md) (not an IETF document; no media type is registered).
 
 ## Licence
 
@@ -96,9 +100,11 @@ Created and maintained by Victor Brunko; see [AUTHORS](AUTHORS).
 
 ## Language packages (subset)
 
-`rust/`, `ts/` (the single npm package `@enmaq/mdgl`, serving JS and TypeScript; `js/` is only a marker), `python/` and `c/` (source tarball only) are early **subset** packages (versions track the shared `VERSION`, currently 0.2.0). Each offers only a resource-limit and scene-header check (input/line size, `width`/`height`/`fallback`, actor and action counts). They are not conformant, do not parse MDGL or render, and a clean result means "no limit/header problems found", not "valid MDGL". The Go module is the reference implementation.
+`rust/`, `ts/` (the single npm package `@enmaq/mdgl`, serving JS and TypeScript; `js/` is only a marker), `python/` and `c/` (source tarball only) are, as **published at 0.2.0**, early **subset** packages (the development tree goes further, see [Unreleased development](#unreleased-development); versions track the shared `VERSION`, currently 0.2.0). Each offers only a resource-limit and scene-header check (input/line size, `width`/`height`/`fallback`, actor and action counts). They are not conformant, do not parse MDGL or render, and a clean result means "no limit/header problems found", not "valid MDGL". The Go module is the reference implementation.
 
-## Language support
+## Language support (PUBLISHED 0.2.0)
+
+This table describes only what is published at 0.2.0. Development work in this tree that is not yet released is described under [Unreleased development](#unreleased-development).
 
 | Capability | Go | Rust | C | JS/TS (npm `@enmaq/mdgl`) | Python |
 | --- | --- | --- | --- | --- | --- |
@@ -106,16 +112,48 @@ Created and maintained by Victor Brunko; see [AUTHORS](AUTHORS).
 | Header and resource-limit seed check | YES | YES | YES | YES | YES |
 | Conformance suite ([`conformance/`](conformance/)) | runs it | not claimed | not claimed | not claimed | not claimed |
 | Terminal player (`mdgl play`) | YES | NO | NO | NO | NO |
-| Install | `go install ./cmd/mdgl` from `go/` (see above) | `cargo add mdgl` | source tarball, no registry | `npm install @enmaq/mdgl` | `pip install mdgl` |
+| Install | `go install github.com/enmaq/mdgl/go/cmd/mdgl@v0.2.0` (see above) | `cargo add mdgl` | source tarball, no registry | `npm install @enmaq/mdgl` | `pip install mdgl` |
 | Status | reference | seed (limited) | seed (limited) | seed (limited) | seed (limited) |
 
-Any all-language source edit (including Go) triggers full cohort validation; the Go tag itself is released separately and a registry-only success is not a complete release.
+Any all-language source edit (including Go) triggers full cohort validation; the Go tag is a separate release step from the registries, and a registry-only success is not a complete release.
 
 The non-Go packages are published at 0.2.0 (npm `@enmaq/mdgl`, crates.io `mdgl`, PyPI `mdgl`) as
 limited seed checks (header/resource checks, not the full Go parser and renderer). The Go module is
-`github.com/enmaq/mdgl/go`; its release tag `go/v0.2.0` is a separate step. At 0.x only the latest
+`github.com/enmaq/mdgl/go`, tagged `go/v0.2.0`. At 0.x only the latest
 minor is supported and nothing is promised stable before 1.0. See [RELEASING.md](RELEASING.md).
 
 The package version (`VERSION`, 0.2.0) is not the grammar version: the `mdgl 0.1` header is defined
 by [SPEC.md](SPEC.md) and does not change with `VERSION`. Before 1.0 there is no ABI or API
 stability promise; supported builds are the ones in CI.
+
+## Unreleased development
+
+Everything in this section exists only in the development tree. It is **not** in the published
+0.2.0 packages (those remain the seed checks above), `VERSION` is still 0.2.0, and none of it is
+released. In the final integration (2026-10-10 UTC) all five adapters (Go, Rust, C, TypeScript/JS, Python) pass the
+83-fixture corpus (63 normative + 20 non-normative) under the bounded protocol-v1 profile; all fixture
+expectations are hand-derived from SPEC. That is bounded evidence, not a universal SPEC certification, and no
+full-conformance claim is made for any implementation. C note: the library builds with `_GNU_SOURCE` and its
+locale-dependent test is skipped when `de_DE.UTF-8` is not installed.
+
+Each language folder now contains a parser, a checker, an evaluator and a terminal-cell renderer
+(as stated by that folder's sources and README), plus an adapter for the
+[observable conformance protocol v1](conformance/PROTOCOL.md). JavaScript is the compiled
+TypeScript in the same npm package (`@enmaq/mdgl`), not an independent implementation.
+
+| Language | Unreleased capability | Adapter command (build first; run from the `v/mdgl` checkout, paths absolute for the runner) | Own tests that read the shared fixtures |
+| --- | --- | --- | --- |
+| Go | published full implementation, plus adapter | `cd go && go build -o <out>/mdgl-conformance ./cmd/conformance`, then `<out>/mdgl-conformance` | `go/conformance_test.go` (legacy fixtures); `go/cmd/conformance/main_test.go` is transport only |
+| Rust | parse, check, evaluate, render, adapter | `cargo build --release --manifest-path rust/Cargo.toml --bin mdgl-adapter`, then `rust/target/release/mdgl-adapter` | `rust/tests/conformance.rs`, `rust/tests/frames.rs` (legacy and observable fixtures), `rust/tests/adapter.rs` |
+| C | parse, check, evaluate, render, adapter | `cmake -S c -B c/build && cmake --build c/build`, then `c/build/mdgl_adapter` | `c/test_adapter.py` (transport); `c/test_render.c` derives from SPEC and protocol examples |
+| TypeScript / JS | parse, check, evaluate, render, adapter | `npm --prefix ts run build`, then `node ts/bin/mdgl-adapter.js` | `ts/test/corpus.test.js`, `ts/test/expect.test.js`; `ts/test/adapter.test.js` |
+| Python | parse, check, evaluate, render, adapter | `env PYTHONPATH=<checkout>/python python3 -m mdgl.adapter` | `python/tests/test_parse_check.py`, `python/tests/test_render.py` (legacy fixtures); `python/tests/test_adapter.py` |
+
+Run the shared runner against any adapter:
+
+```
+python3 scripts/conformance-runner.py --adapter '<cmd>'
+```
+
+The fixture inventory (83 fixtures: 63 normative, 20 non-normative) and known open gaps are in
+[`conformance/README.md`](conformance/README.md).

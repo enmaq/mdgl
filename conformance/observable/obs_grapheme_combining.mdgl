@@ -1,0 +1,2 @@
+scene width=6 height=1 fallback=end
+actor a = text("e\u0301B") at (0, 0)

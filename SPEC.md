@@ -246,7 +246,7 @@ did-you-mean suggestion when edit distance <=2; ties choose lexical order.
 
 Maximum input 256 KiB; line 16 KiB; stage 200×60; 64 actors; 1024 actions;
 text/title 1024 grapheme clusters; period and each action end <=60 seconds;
-fps 1..30; repeat 1..1000 or infinite; scale 0<value<=16; geometry 0<size<=200;
+fps 1..30; repeat 1..1000 or infinite; scale 0<value<=16; geometry 0<size<=200 (circle radius <=100, i.e. diameter <=200);
 coordinates/rotation bounded to ±10000. Values must be finite. Rejected input
 never plays. Parser creates source-located model; checker validates references,
 arguments and conflicts; evaluator is pure and requires a checked scene. Renderer
@@ -255,3 +255,9 @@ Frames prints the conformance format. Play uses absolute elapsed time, dirty cel
 DEC synchronized-output mode 2026, and stops its timer on finite completion or
 interrupt. Redirected output and reduced motion (`NO_COLOR` or `MDGL_REDUCED_MOTION`)
 use the fallback frame with no timer. No background scheduler exists.
+
+## Observable conformance protocol (supplement)
+
+The observable output used by conformance (check diagnostics, frame cells with foreground and background, and the
+`done` state) is described in [conformance/PROTOCOL.md](conformance/PROTOCOL.md). That document clarifies the observable
+output and does not change normative semantics of this specification.

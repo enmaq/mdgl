@@ -1,0 +1,11 @@
+{
+  "source_file": "obs_wide_glyph.mdgl",
+  "cols": 6,
+  "rows": 1,
+  "class": "static",
+  "normative": false,
+  "derivation": "SPEC Cells: wide glyphs are represented as U+FFFD and one grapheme consumes one cell, so U+754C -> U+FFFD at column 0 and B at column 1. ASSUMES(A4): SPEC does not define 'wide' (East Asian Width W/F is assumed; matches legacy graphemes.expect).",
+  "frames": [
+    {"time":"0","cells":[[{"r":"�","fg":"normal","bg":""},{"r":"B","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""},{"r":" ","fg":"normal","bg":""}]],"done":true}
+  ]
+}

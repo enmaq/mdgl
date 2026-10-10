@@ -112,7 +112,13 @@ func At(scene *model.Scene, time float64) model.State {
 			if count == 0 {
 				target.Reveal = 1
 			} else {
-				target.Reveal = math.Min(count, math.Floor((time-action.Begin)/check.Number(action.Args["per_char"])+1e-9)) / count
+				elapsedNS := nanoseconds(time) - nanoseconds(action.Begin)
+				perCharNS := nanoseconds(check.Number(action.Args["per_char"]))
+				revealed := int64(0)
+				if perCharNS > 0 && elapsedNS > 0 {
+					revealed = elapsedNS / perCharNS
+				}
+				target.Reveal = math.Min(count, float64(revealed)) / count
 			}
 		case "wipe":
 			target.Reveal = eased
@@ -163,6 +169,10 @@ func At(scene *model.Scene, time float64) model.State {
 	}
 	return state
 }
+func nanoseconds(seconds float64) int64 {
+	return int64(math.Round(model.Time(seconds) * 1e9))
+}
+
 func outside(scene *model.Scene, actor model.ActorState, direction string) (float64, float64) {
 	horizontal, vertical := actor.X, actor.Y
 	width, height := float64(scene.Width), float64(scene.Height)

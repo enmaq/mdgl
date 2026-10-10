@@ -1,0 +1,2 @@
+scene width=2 height=1 fallback=end
+actor c = circle(101) at (0, 0)
