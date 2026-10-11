@@ -1,8 +1,7 @@
-# mdgl (Python - 0.3.0 release candidate in source: parser, checker, evaluator, renderer, adapter, player)
+# mdgl (Python: parser, checker, evaluator, renderer, adapter, player)
 
-0.3.0 release candidate in source, not yet published. The **published 0.2.0 package is the limited header/resource seed check** (immutable); the
-capabilities below exist only in source. Conformance adapter: `python3 -m mdgl.adapter`
-(NDJSON protocol v1). In the final integration (2026-10-10 UTC) it passed, together with the four other adapters, the 83-fixture corpus (63 normative + 20 non-normative) under the bounded protocol-v1 profile; that is bounded evidence, not a universal SPEC certification. Rect/circle/cube
+Full MDGL 0.1 parser, checker, evaluator, terminal-cell renderer and terminal player. The 0.2.0 package was an earlier limited header/resource check. Conformance adapter: `python3 -m mdgl.adapter`
+(NDJSON protocol v1). The current shared corpus has 86 fixtures (64 normative + 22 non-normative or profile-assumption); all five adapters (Go, Rust, C, TypeScript/JavaScript, Python) passed it in an independent verification on 2026-10-10 UTC, accepted by the coordinator. That is bounded evidence under conformance protocol v1, not a universal SPEC certification. Rect/circle/cube
 colour exist only as non-normative reference-profile fixtures; full SPEC conformance is NOT claimed. The Go module is the reference.
 
 ## Implemented
@@ -33,7 +32,7 @@ assert mdgl.check("scene width=8 height=1\n")[0]["message"] == "missing scene at
 
 ## Install and versions
 
-`pip install mdgl` gives the published 0.2.0 seed check only, not the code in this tree. To try the 0.3.0 release candidate from source, install it editable from a repository checkout (`v/mdgl/python`), ideally in a fresh virtual environment:
+`pip install mdgl` installs the package from PyPI, including the `mdgl` command (`mdgl play FILE`, or `python3 -m mdgl`). To work from source, install it editable from a repository checkout (`v/mdgl/python`), ideally in a fresh virtual environment:
 
 ```
 python3 -m venv .venv && . .venv/bin/activate
@@ -56,7 +55,7 @@ print("\n".join(scene.frame(1.5).lines()))   # or scene.frame_ns(ns), scene.fall
 
 ## Terminal player and CLI
 
-Installing this tree (`pip install .` or `pip install -e .`) puts an `mdgl` command on your PATH (also `python -m mdgl`):
+Installing the package (`pip install mdgl`, or `pip install .` / `pip install -e .` from a checkout) puts an `mdgl` command on your PATH (also `python -m mdgl`):
 
 ```
 mdgl play FILE            # animate in the terminal; Ctrl+C stops and restores the cursor

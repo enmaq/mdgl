@@ -7,6 +7,8 @@ All notable changes to MDGL. The format follows [Keep a Changelog](https://keepa
 
 ## [0.3.0] - 2026-10-10
 
+Provenance: the registry packages for 0.3.0 (npm `@enmaq/mdgl`, crates.io `mdgl`, PyPI `mdgl`, C source tarball) carry corrected package-facing metadata and README text (version-neutral descriptions and READMEs) relative to the public 0.3.0 git tags, which retain the original source tree. Code, API, version and tag-covered files (`go/`, `conformance/`, `SPEC.md`, `VERSION`) are unchanged.
+
 Full parser, checker, evaluator and terminal-cell renderer, plus a conformance adapter, for Rust, C, TypeScript/JavaScript (one npm package, `@enmaq/mdgl`) and Python; Go was already full. The shared corpus has 86 fixtures (64 normative + 22 non-normative); all five adapters pass it under the bounded protocol-v1 profile: bounded evidence, not a universal SPEC certification.
 
 ### Added

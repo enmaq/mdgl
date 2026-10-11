@@ -1,13 +1,11 @@
-# MDGL for C (0.3.0 release candidate in source: parser, checker, evaluator, renderer, adapter, player)
+# MDGL for C (parser, checker, evaluator, renderer, adapter, player)
 
-0.3.0 release candidate in source, not yet published. In the final integration (2026-10-10 UTC) it passed, together with the four other adapters, the 83-fixture corpus (63 normative + 20 non-normative) under the bounded protocol-v1 profile (current corpus: 86 fixtures, 64 normative + 22 non-normative; independent verification pending); that is bounded evidence, not a universal SPEC certification. Limitation: the library builds with `_GNU_SOURCE`, and the locale-dependent test is skipped when `de_DE.UTF-8` is not installed.
+Full MDGL 0.1 parser, checker, evaluator, terminal-cell renderer, conformance adapter and terminal player. The current shared corpus has 86 fixtures (64 normative + 22 non-normative or profile-assumption); all five adapters (Go, Rust, C, TypeScript/JavaScript, Python) passed it in an independent verification on 2026-10-10 UTC, accepted by the coordinator. That is bounded evidence under conformance protocol v1, not a universal SPEC certification. Limitation: the library builds with `_GNU_SOURCE`, and the locale-dependent test is skipped when `de_DE.UTF-8` is not installed.
 
 C99, dependency-free (libm only) parser and semantic checker for
 [MDGL](https://github.com/enmaq/mdgl) 0.1, ported from the Go reference
 (`parse` + `check`). The first diagnostic equals Go's `line:column: message`
-(one-based UTF-8 byte columns). Declared version is `0.3.0` (release candidate); the
-published 0.2.0 C source tarball was a limited header/resource seed only and does not have
-anything described here.
+(one-based UTF-8 byte columns). The 0.2.0 C source tarball was an earlier limited header/resource check.
 
 **Done:** lexing (Go quoted escapes, byte columns, finite non-exponent
 decimals, `deg`/`rad`/`s`/`%` suffixes), parsing, scene/actor/action checking
@@ -30,7 +28,7 @@ line: `bad_request`, rest of the line discarded), exact mathematical integers fo
 lone-surrogate and invalid-UTF-8 handling, final unterminated line answered then exit 0, `done`
 only on non-fallback frames, `invalid_source` with diagnostics. Duplicate JSON members: the last
 wins; nesting deeper than 256 is `bad_request`; unknown members are ignored. Transport tests:
-`python3 test_adapter.py ./mdgl_adapter`. The final-integration runner result for this adapter is bounded evidence, not a conformance certification.
+`python3 test_adapter.py ./mdgl_adapter`. Conformance results are bounded evidence, not a certification (see the evidence statement at the top).
 
 **Not done:** status canvas; Windows/MSVC build is untested.
 

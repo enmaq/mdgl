@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "mdgl"
 version = "0.3.0"
-description = "MarkdownGL checker; the development tree also has a parser, evaluator, terminal renderer and protocol adapter (unreleased, not independently validated)."
+description = "MDGL 0.1 parser, checker, evaluator, terminal-cell renderer and terminal player."
 readme = "README.md"
 requires-python = ">=3.9"
 license = "MIT OR Apache-2.0"

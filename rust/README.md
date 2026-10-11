@@ -1,9 +1,10 @@
-# mdgl (Rust - 0.3.0 release candidate in source)
+# mdgl (Rust)
 
-Parser, checker, evaluator and terminal-cell renderer for [MDGL](https://github.com/enmaq/mdgl) 0.1,
-developed from `SPEC.md` and the shared `conformance/` corpus. This is the 0.3.0 release candidate in source, not yet published: the
-published 0.2.0 crate (a limited header/resource seed check, immutable) does not contain this code.
-Everything below is in source only. In the final integration (2026-10-10 UTC) it passed, together with the four other adapters, the 83-fixture corpus (63 normative + 20 non-normative) under the bounded protocol-v1 profile; the current corpus is 86 fixtures (64 normative + 22 non-normative), independent verification of which is pending. That is bounded evidence, not a universal SPEC certification.
+Full parser, checker, evaluator, terminal-cell renderer and terminal player for [MDGL](https://github.com/enmaq/mdgl) 0.1,
+developed from `SPEC.md` and the shared `conformance/` corpus, with a protocol-v1 conformance adapter (`mdgl-adapter`).
+The 0.2.0 crate was an earlier limited header/resource check.
+
+The current shared corpus has 86 fixtures (64 normative + 22 non-normative or profile-assumption); all five adapters (Go, Rust, C, TypeScript/JavaScript, Python) passed it in an independent verification on 2026-10-10 UTC, accepted by the coordinator. That is bounded evidence under conformance protocol v1, not a universal SPEC certification.
 
 ## Implemented
 
@@ -35,10 +36,11 @@ cargo run --example render -- path/to/scene.mdgl   # your own scene
 ## Command line
 
 ```
-cargo install --path . --root "$PWD/.local"      # or: cargo install mdgl, once released
-.local/bin/mdgl check ../examples/text.mdgl
-.local/bin/mdgl frames ../examples/text.mdgl --at 0,2.5
-.local/bin/mdgl play ../examples/text.mdgl       # Ctrl+C stops
+cargo install mdgl                               # from crates.io (installs the mdgl and mdgl-adapter binaries)
+# or from a checkout, in rust/: cargo install --path . --root "$PWD/.local"   (then use .local/bin/mdgl)
+mdgl check ../examples/text.mdgl
+mdgl frames ../examples/text.mdgl --at 0,2.5
+mdgl play ../examples/text.mdgl       # Ctrl+C stops
 ```
 
 `mdgl play` takes absolute elapsed time from a monotonic clock (frames are never advanced by counting
@@ -72,7 +74,7 @@ Go uniseg v0.4.7 (Unicode 15.0.0; generated tables in `src/width_tables.rs`, MIT
 
 - Grapheme clusters: UAX #29 extended clusters from `unicode-segmentation` =1.10.1 (Unicode 15.0.0, the reference profile of Go uniseg v0.4.7; not declared a universal MDGL norm).
 - `\xNN` escapes producing invalid UTF-8 are rejected as `invalid string escape`.
-- Terminal player: Unix only is verified. The NDJSON adapter source `src/bin/mdgl-adapter.rs` (`cargo build --release --bin mdgl-adapter`) implements protocol v1 (see `conformance/PROTOCOL.md`); run it with `scripts/conformance-runner.py --adapter <path>`. In the final integration (2026-10-10 UTC) it passed, together with the four other adapters, the 83-fixture corpus (63 normative + 20 non-normative) under the bounded protocol-v1 profile; that is bounded evidence, not a universal SPEC certification.
+- Terminal player: Unix only is verified. The NDJSON adapter source `src/bin/mdgl-adapter.rs` (`cargo build --release --bin mdgl-adapter`) implements protocol v1 (see `conformance/PROTOCOL.md`); run it with `scripts/conformance-runner.py --adapter <path>`. See the evidence statement at the top.
 - Evaluator and renderer follow SPEC but were cross-read against the Go reference; normative coverage of cube glyphs is glyph-level only; rect, circle and cube colour exist only as non-normative reference-profile fixtures (`obs_ref_*`), and normative rect/circle coverage remains an open gap (protocol G7). All expectations are hand-derived.
 
 ```
