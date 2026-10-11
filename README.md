@@ -38,6 +38,15 @@ and reduced-motion users.
 - [Kubernetes: from desired state to a running service](docs/media/kubernetes.mp4) ([GIF](docs/media/kubernetes.gif)).
 - [LLM inference: tokens to the next-token loop](docs/media/llm.mp4) ([GIF](docs/media/llm.gif)).
 
+## MDGL in a TLDRQ canvas
+
+[TLDRQ](https://github.com/enmaq/tldrq) is a shared workspace for humans and coding agents. Its Canvas is a shared Markdown page that
+plays a fenced `mdgl` block in place, and a human and an agent can edit the same page. Any scene in [`examples/`](examples/) works
+the same way: paste the contents of, for example, [`examples/kubernetes.mdgl`](examples/kubernetes.mdgl) into an `mdgl` fence on a
+canvas and it animates there, reusable as a live diagram the team can discuss.
+[TLDRQ's own canvas demo](https://github.com/enmaq/tldrq/blob/main/docs/media/canvas.mp4) shows an animated page being edited live.
+**[Try TLDRQ — installation instructions](https://github.com/enmaq/tldrq#install)**. Standalone MDGL installation and usage are described below.
+
 ## Install and use
 
 This is MDGL 0.3.1 for all five languages; see [Language support](#language-support) for the exact install commands.
