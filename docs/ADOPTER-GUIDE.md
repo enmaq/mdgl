@@ -14,18 +14,19 @@ actions. A frame is a pure function of (scene, time, size).
 - **Embedders** (terminals, docs tools, chat or agent UIs) that show a scene or its still frame.
 - **Doc authors**, people and LLMs, writing scenes ([MDGL.md](../MDGL.md) is a one-page primer).
 
-The only renderer profile is terminal cells (braille dots, 2x4 per cell). A browser renderer is not shipped.
+The only renderer profile is terminal cells (braille dots, 2x4 per cell), available in all five languages. A browser/WebGL renderer is not shipped.
 
 ## 2. Current state (2026-10-10 UTC)
 
 | Item | State |
 |---|---|
-| Go module `github.com/enmaq/mdgl/go`, tags `v0.2.0` and `go/v0.2.0` | The only **published full implementation**. |
-| npm `@enmaq/mdgl`, crates.io `mdgl`, PyPI `mdgl` at 0.2.0 | Published, but **limited header/resource seed checks**. A clean result means "no limit or header problems found", not "valid MDGL". |
-| Rust, C, TypeScript (compiled to JS, one npm package), Python cores and adapters | **0.3.0 release candidate in source, not yet published** (`VERSION` is 0.3.0; published is still 0.2.0). JS and TypeScript are one implementation. |
+| Go module `github.com/enmaq/mdgl/go`, tags `v0.3.0` and `go/v0.3.0` | Full implementation (parser, checker, evaluator, renderer, adapter, player). |
+| npm `@enmaq/mdgl`, crates.io `mdgl`, PyPI `mdgl` at 0.3.0 | Full implementations with adapters and terminal players; JS and TypeScript are one implementation. |
+| C | Full implementation with adapter and player; source build via cmake, no registry (see [`c/README.md`](../c/README.md)). |
 
-In the final integration all five adapters (Go, Rust, C, TypeScript/JS, Python) pass the 83-fixture corpus
-(83/83 = 63 normative + 20 non-normative; historical result) under the bounded protocol-v1 profile. The current corpus is 86 fixtures (64 normative + 22 non-normative); the 3 later circle fixtures were matched by all five adapters in a targeted run and the current 86-fixture corpus (64 normative + 22 non-normative) passed on all five adapters in an independent verification on 2026-10-10 UTC (accepted by the coordinator); verification of the new 0.3 integration (players, version bump, packages) is still pending. That is **bounded evidence, not a
+The git tags retain the original source tree; the registry packages carry corrected version-neutral metadata and README text (see [CHANGELOG.md](../CHANGELOG.md)); code, API and version are unchanged.
+
+All five adapters (Go, Rust, C, TypeScript/JS, Python) pass the current 86-fixture corpus (64 normative + 22 non-normative) under the bounded protocol-v1 profile, in an independent verification on 2026-10-10 UTC (accepted by the coordinator). History: the earlier final-integration result was 83/83 = 63 normative + 20 non-normative; the 3 later circle fixtures were matched by all five adapters in a targeted run. That is **bounded evidence, not a
 universal SPEC certification**. See section 8 for what it does not cover.
 
 ## 3. Implementing MDGL, in order
@@ -44,8 +45,8 @@ Follow [SPEC.md](../SPEC.md) for every rule; this is only an order of work.
 5. **Adapter.** Wrap it in the newline-delimited JSON process of protocol v1 (section 5).
 
 Where SPEC is silent (section 8), do not treat another implementation's behaviour as normative; report the gap.
-Reference adapters for comparison (each builds from the source tree, the 0.3.0 release candidate, see the table in
-[README.md](../README.md#release-candidate-in-source-030)): `go/cmd/conformance`, `rust/src/bin/mdgl-adapter.rs`,
+Reference adapters for comparison (each builds from the source tree, see the table in
+[README.md](../README.md#adapters)): `go/cmd/conformance`, `rust/src/bin/mdgl-adapter.rs`,
 `c/mdgl_adapter.c`, `ts/bin/mdgl-adapter.js`, `python/mdgl/adapter.py`.
 
 ## 4. Running the conformance suite
@@ -68,8 +69,8 @@ malformed fixture or zero fixtures selected. Read the last line, not only the ex
 Runner self-tests use a test double that is not an MDGL implementation:
 `python3 -I scripts/test_conformance_runner.py -v`.
 Corpus: 86 fixtures = 46 legacy + 40 observable; 64 normative, 22 non-normative (passed on all five adapters in an independent
-verification on 2026-10-10 UTC, accepted by the coordinator; verification of the new 0.3 integration is still pending)
-([conformance/README.md](../conformance/README.md)). Expectations are hand-derived from SPEC.
+verification on 2026-10-10 UTC, accepted by the coordinator)
+([conformance/README.md](../conformance/README.md)). The 64 normative fixtures are derived from SPEC; the 22 non-normative fixtures rest on documented profile assumptions and provenance (`conformance/REFERENCE_PROFILE.md`, `conformance/PROTOCOL.md`).
 
 ## 5. Adapter protocol v1 in short
 
@@ -120,15 +121,15 @@ the time and size, and the output each reading gives. Typos, messages and bugs n
 
 ## 8. Honest limitations
 
-- The 83/83 result across five adapters (historical; current corpus is 86 = 64 + 22) is bounded evidence under protocol v1; it is not a universal SPEC certification, and
-  the corpus is hand-derived from SPEC.
+- The 86-fixture (64 + 22) result across five adapters (earlier 83/83 = 63 + 20, historical) is bounded evidence under protocol v1; it is not a universal SPEC certification, and
+  the 64 normative fixtures are derived from SPEC and the 22 non-normative ones rest on documented profile assumptions.
 - Normative rect, circle and cube-colour raster extents are open SPEC gaps. They are covered only by non-normative
   reference-profile fixtures, whose rect/circle dot offset differs from SPEC.
 - The circle size bound is resolved by a project maintainers' decision (SPEC.md clarification, not an IETF or
   standards-body decision): radius <= 100, equivalently diameter <= 200; r > 100 is an error. The Go, Rust, C and
   Python adapters reject a radius above 100, and the TypeScript adapter has been corrected to match. This is
   confirmed by the five adapters on the three circle boundary fixtures (targeted run); independent verification on
-  2026-10-10 UTC (accepted by the coordinator) passed the full 86-fixture corpus; verification of the new 0.3 integration is still pending. The wording agreement of the diagnostic is observed, not a SPEC rule.
+  2026-10-10 UTC (accepted by the coordinator) passed the full 86-fixture corpus. The wording agreement of the diagnostic is observed, not a SPEC rule.
 - Other open questions (proposals, not rules): title epsilon wording and semantics, reveal and transform, easing
   curves, stage limits beyond 200x60, reserved-vocabulary diagnostics, diagnostic wording beyond `.err`, fallback
   `done`, viewport clamp, blend rounding, extension namespacing, Unicode version. See
@@ -140,7 +141,7 @@ the time and size, and the output each reading gives. Typos, messages and bugs n
 - C: builds with `_GNU_SOURCE`; its locale-dependent test is skipped when `de_DE.UTF-8` is not installed.
   Windows/MSVC is untested.
 - No browser renderer. At 0.x only the latest minor is supported and nothing is stable before 1.0. The package
-  `VERSION` (0.3.0 release candidate) is not the grammar version (`mdgl 0.1`).
+  `VERSION` (0.3.0) is not the grammar version (`mdgl 0.1`).
 - No media type is registered, and nothing here is endorsed by a standards body.
 
 ## 9. Checklists
@@ -153,8 +154,7 @@ the time and size, and the output each reading gives. Typos, messages and bugs n
 - [ ] State which suite revision and gaps you pass; claim nothing beyond the verdict.
 
 **Embedder**
-- [ ] Use the Go module (the only published full implementation) or a later validated release; the other published
-  packages are seed checks.
+- [ ] Use a published 0.3.0 package or a later validated release (see the table above).
 - [ ] Check untrusted input first; honour the limits; never play rejected input.
 - [ ] Honour both `Color` and `Background`.
 - [ ] Use the fallback frame for redirected output and reduced motion, with no timer.

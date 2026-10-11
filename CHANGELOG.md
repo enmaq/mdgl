@@ -5,6 +5,8 @@ All notable changes to MDGL. The format follows [Keep a Changelog](https://keepa
 
 ## [Unreleased]
 
+- Documentation only: final adopter and release documentation for the published 0.3.0 packages; no code, API or version change.
+
 ## [0.3.0] - 2026-10-10
 
 Provenance: the registry packages for 0.3.0 (npm `@enmaq/mdgl`, crates.io `mdgl`, PyPI `mdgl`, C source tarball) carry corrected package-facing metadata and README text (version-neutral descriptions and READMEs) relative to the public 0.3.0 git tags, which retain the original source tree. Code, API, version and tag-covered files (`go/`, `conformance/`, `SPEC.md`, `VERSION`) are unchanged.

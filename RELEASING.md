@@ -113,7 +113,7 @@ and is superseded by `@enmaq/mdgl`.
    `VERSION` or relevant shared sources change. For a local dry run, run
    `scripts/publish-mdgl-packages.sh --cohort` without `--publish`.
 3. Registry name state is rechecked automatically in the publisher preflight. Current published
-   names: crates.io `mdgl`, PyPI `mdgl`, npm `@enmaq/mdgl` (all at 0.2.0; npm is scoped
+   names: crates.io `mdgl`, PyPI `mdgl`, npm `@enmaq/mdgl` (all at 0.3.0; npm is scoped
    because unscoped `mdgl` was refused as too similar to existing names). Future releases bump
    `VERSION`; the cohort job skips identical existing versions.
 4. Verify ownership by hand and set the attestations below.
@@ -168,11 +168,11 @@ Versions are never reusable on any registry; fix forward with a bump.
 At 0.x only the latest minor version is supported; there is no backport. There is no
 deprecation promise before 1.0: anything may change between minor versions, recorded in
 `CHANGELOG.md`. All implementations share the language contract in [`SPEC.md`](SPEC.md) and the
-[`conformance/`](conformance/) suite. Today only Go runs the suite; Rust, C, JS/TS and Python are
-subset header checkers and make no conformance claim.
+[`conformance/`](conformance/) suite. All five languages (Go, Rust, C, JS/TS, Python) ship an adapter and
+passed the 86-fixture corpus under the bounded protocol-v1 profile (independent verification, 2026-10-10 UTC, accepted by the coordinator); this is bounded evidence, not a full-conformance claim.
 
 Package version versus grammar version: the shared MDGL package version (`VERSION`, currently
-0.2.0) is distinct from the language identifier. The `mdgl 0.1` header in a scene is the grammar
+0.3.0) is distinct from the language identifier. The `mdgl 0.1` header in a scene is the grammar
 version defined by `SPEC.md`; it does not change when `VERSION` changes.
 
 Compatibility statement: before 1.0 (0.x) there is no ABI or API stability promise in any
@@ -195,9 +195,7 @@ the root `CHANGELOG.md`. The publisher creates matching `vX.Y.Z` (snapshot) and 
 `github.com/enmaq/mdgl/go`. The old root-module releases `v0.1.0` and `v0.1.1` remain
 available; this flow does not delete or replace those tags or their package history.
 
-The nested module at `github.com/enmaq/mdgl/go` is published at `@v0.2.0` (tag `go/v0.2.0`).
-The source tree is the 0.3.0 release candidate: `VERSION` and manifests say 0.3.0, but no
-`go/v0.3.0` tag or 0.3.0 registry package exists until a shared release publishes them.
+The nested module at `github.com/enmaq/mdgl/go` is published at `@v0.3.0` (tag `go/v0.3.0`), and the 0.3.0 registry packages are published. The public tags `v0.3.0` and `go/v0.3.0` retain the original source tree, while the registry packages carry corrected version-neutral metadata and README text (see `CHANGELOG.md`); code, API and version are unchanged.
 
 The registry-only cohort uses `scripts/publish-mdgl-packages.sh` and never invokes this
 Git-mutating snapshot publisher. Go snapshot publication is a separate release path.
