@@ -1,19 +1,20 @@
-//! MDGL 0.1 parser and checker (scene/actor/action lexing, parsing and semantic checking).
+//! MDGL 0.1 parser, checker, pure evaluator, terminal-cell renderer and terminal player.
 //!
-//! Development status: parsing and checking follow SPEC.md; the pure evaluator and the
-//! terminal-cell renderer are NOT implemented yet. Grapheme clustering is an approximation
-//! (no Unicode segmentation tables, no wide-glyph table). Spec: <https://github.com/enmaq/mdgl/blob/main/SPEC.md>
+//! Development tree: not yet in a published release. Grapheme clusters follow UAX #29 and Go uniseg
+//! v0.4.7 (Unicode 15.0.0). Spec: <https://github.com/enmaq/mdgl/blob/main/SPEC.md>
 
 mod checker;
 mod eval;
 mod geometry;
 mod model;
 mod parse;
+mod player;
 mod render;
 mod width_tables;
 
 pub use checker::{check_scene, glyphs, time, COLORS, EASES, VERBS};
 pub use eval::{ease, frame as eval_frame, at as eval_at, ActorState, State};
+pub use player::{diff, play, plain, Clock, Outcome, SystemClock};
 pub use render::{cell_glyphs, render, Cell, Frame};
 pub use model::{Action, Actor, Args, Diag, Pos, Scene, Value};
 pub use parse::{parse, MAX_ACTIONS, MAX_ACTORS, MAX_INPUT, MAX_LINE};

@@ -62,7 +62,7 @@ class TestCheck(unittest.TestCase):
             check(None)
 
     def test_version(self):
-        self.assertEqual(__version__, "0.2.0")
+        self.assertEqual(__version__, "0.3.0")
 
 
 if __name__ == "__main__":

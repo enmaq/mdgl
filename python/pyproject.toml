@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "mdgl"
-version = "0.2.0"
+version = "0.3.0"
 description = "MarkdownGL checker; the development tree also has a parser, evaluator, terminal renderer and protocol adapter (unreleased, not independently validated)."
 readme = "README.md"
 requires-python = ">=3.9"
@@ -15,6 +15,9 @@ classifiers = [
   "Development Status :: 2 - Pre-Alpha",
   "Programming Language :: Python :: 3",
 ]
+
+[project.scripts]
+mdgl = "mdgl.cli:run"
 
 [project.urls]
 Homepage = "https://github.com/enmaq/mdgl"

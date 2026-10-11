@@ -223,7 +223,7 @@ int main(void) {
         expect_n("nul byte", BASE "\0", sizeof BASE, "2:1: unexpected character \"\\x00\"");
     }
     if (mdgl_check(NULL, NULL, 0) != -1) { puts("FAIL null out"); failures++; }
-    if (strcmp(MDGL_VERSION, "0.2.0") != 0) { puts("FAIL version"); failures++; }
+    if (strcmp(MDGL_VERSION, "0.3.0") != 0) { puts("FAIL version"); failures++; }
     if (failures) { printf("c check: %d FAILED\n", failures); return 1; }
     printf("c check: OK (mdgl %s parse+check)\n", MDGL_VERSION);
     return 0;

@@ -1,4 +1,4 @@
-/* MDGL 0.1 C parser and checker (development tree; VERSION still 0.2.0).
+/* MDGL 0.1 C parser and checker (development tree; VERSION 0.3.0).
  *
  * Implemented: lexing, parsing and semantic checking of scene/actor/action
  * statements, ported from the Go reference (parse + check packages) so that the
@@ -26,7 +26,7 @@
 extern "C" {
 #endif
 
-#define MDGL_VERSION "0.2.0"
+#define MDGL_VERSION "0.3.0"
 #define MDGL_MAX_DIAGS 16
 #define MDGL_MSG_LEN 512
 

@@ -19,5 +19,8 @@ chk c/CMakeLists.txt "$(sed -n 's/^project(mdgl VERSION \([^ )]*\).*/\1/p' c/CMa
 chk python/mdgl/__init__.py "$(sed -n 's/^__version__ *= *["'"'"']\([^"'"'"']*\)["'"'"'].*/\1/p' python/mdgl/__init__.py 2>/dev/null | sed -n 1p)"
 chk ts/src/index.ts "$(sed -n "s/^export const VERSION *\(: *string\)\{0,1\} *= *['\"]\([^'\"]*\)['\"].*/\2/p" ts/src/index.ts 2>/dev/null | sed -n 1p)"
 chk CHANGELOG.md "$(sed -n 's/^## \[\([0-9][^]]*\)\].*/\1/p' CHANGELOG.md | sed -n 1p)"
+chk "ts/package-lock.json (top)" "$(sed -n 's/^ *"version": *"\([^"]*\)".*/\1/p' ts/package-lock.json 2>/dev/null | sed -n 1p)"
+chk "ts/package-lock.json (root package)" "$(awk '/^ *"": *\{/&&!f{match($0,/^ */);i=RLENGTH;f=1;next} f{match($0,/^ */);if(RLENGTH<=i)exit;if(RLENGTH==i+2&&/^ *"version": *"/){sub(/^ *"version": *"/,"");sub(/".*$/,"");print;exit}}' ts/package-lock.json 2>/dev/null)"
+chk rust/Cargo.lock "$(awk '/^name = "mdgl"$/{f=1;next} f&&/^version *= *"/{gsub(/^version *= *"|".*$/,"");print;exit} /^\[\[package\]\]/{f=0}' rust/Cargo.lock 2>/dev/null)"
 [ $rc -eq 0 ] && echo "versions OK: $v"
 exit $rc

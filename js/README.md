@@ -9,7 +9,7 @@ const { check } = require('@enmaq/mdgl');
 console.log(check('scene width=8 height=1 fallback=end\n')); // []
 ```
 
-In this development tree (unreleased) the same package also has an evaluator, terminal-cell renderer and
+In this source tree (0.3.0 release candidate, not yet published) the same package also has an evaluator, terminal-cell renderer and
 protocol adapter, compiled from TypeScript; see the [`ts` README](../ts/README.md). Published 0.2.0 is only
 the earlier limit/header subset checker.
 
@@ -17,6 +17,10 @@ the earlier limit/header subset checker.
 
 A runnable JavaScript example is in [`../ts/examples/render.mjs`](../ts/examples/render.mjs); see the
 [`ts` README](../ts/README.md#examples) for the commands.
+
+## Terminal player
+
+`mdgl play FILE` is part of the 0.3.0 release candidate (not yet published; `npm install @enmaq/mdgl` currently gives the 0.2.0 seed check); see the [`ts` README](../ts/README.md#terminal-player-mdgl-play-file).
 
 ## Install and versions
 

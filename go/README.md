@@ -2,15 +2,19 @@
 
 `github.com/enmaq/mdgl/go` is the Go module of MDGL, a small animation language
 written in Markdown that renders as terminal cells. It parses and checks a
-scene, evaluates it at any time, and returns a grid of cells. It is tagged
-`v0.2.0` (nested tag `go/v0.2.0`).
+scene, evaluates it at any time, and returns a grid of cells. The latest published tag is
+`v0.2.0` (nested tag `go/v0.2.0`); the source tree is the 0.3.0 release candidate (not yet tagged).
 
 ## Install
+
+Published (0.2.0):
 
 ```
 go get github.com/enmaq/mdgl/go@v0.2.0
 go install github.com/enmaq/mdgl/go/cmd/mdgl@v0.2.0
 ```
+
+From source (0.3.0 release candidate; no `v0.3.0` tag exists yet): in a checkout, `cd v/mdgl/go && go install ./cmd/mdgl`.
 
 ## Use
 

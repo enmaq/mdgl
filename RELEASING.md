@@ -195,10 +195,9 @@ the root `CHANGELOG.md`. The publisher creates matching `vX.Y.Z` (snapshot) and 
 `github.com/enmaq/mdgl/go`. The old root-module releases `v0.1.0` and `v0.1.1` remain
 available; this flow does not delete or replace those tags or their package history.
 
-Until the first shared release, the published CLI remains
-`github.com/enmaq/mdgl/cmd/mdgl@v0.1.1`. The nested module at
-`github.com/enmaq/mdgl/go` is available at `@v0.2.0` only after the first shared release
-publishes its `go/v0.2.0` tag.
+The nested module at `github.com/enmaq/mdgl/go` is published at `@v0.2.0` (tag `go/v0.2.0`).
+The source tree is the 0.3.0 release candidate: `VERSION` and manifests say 0.3.0, but no
+`go/v0.3.0` tag or 0.3.0 registry package exists until a shared release publishes them.
 
 The registry-only cohort uses `scripts/publish-mdgl-packages.sh` and never invokes this
 Git-mutating snapshot publisher. Go snapshot publication is a separate release path.

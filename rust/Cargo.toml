@@ -1,15 +1,23 @@
 [package]
 name = "mdgl"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2021"
 rust-version = "1.74"
-description = "MarkdownGL 0.1 parser and checker; the development tree also has an evaluator, renderer and protocol adapter (unreleased)."
+description = "MarkdownGL 0.1 parser, checker, evaluator, renderer and terminal player (development)."
 readme = "README.md"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/enmaq/mdgl"
 homepage = "https://github.com/enmaq/mdgl"
 keywords = ["mdgl", "markdown", "animation", "terminal"]
 include = ["src/**", "examples/**", "scripts/**", "README.md", "LICENSE-MIT", "LICENSE-APACHE", "LICENSE-UNISEG", "Cargo.toml"]
+
+[[bin]]
+name = "mdgl"
+path = "src/bin/mdgl.rs"
+
+[[bin]]
+name = "mdgl-adapter"
+path = "src/bin/mdgl-adapter.rs"
 
 [lib]
 name = "mdgl"

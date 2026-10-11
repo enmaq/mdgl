@@ -90,8 +90,7 @@ invalid UTF-8, where protocol v1 requires rejection. It was **fixed** and **inde
 retry.
 
 Corpus note: the 83/83 result above was recorded before the three circle boundary fixtures were added (section 4.4
-item 5). The corpus now has 86 fixtures = 46 legacy + 40 observable; 64 normative + 22 non-normative. No full pass
-of the 86-fixture corpus is claimed here: independent verification of the full 86-fixture corpus is pending.
+item 5). The CURRENT corpus has 86 fixtures = 46 legacy + 40 observable; 64 normative + 22 non-normative (all five adapters matched the 3 circle fixtures in a targeted run). The current 86-fixture corpus (64 normative + 22 non-normative) passed on all five adapters in an independent verification on 2026-10-10 UTC (accepted by the coordinator); verification of the new 0.3 integration (players, version bump, packages) is still pending. This is bounded evidence, not a universal certification.
 
 Not covered: the normative fixtures do not include normative rect, circle or coloured-cube rasterisation
 (section 10, item 1); the C locale limitation below; any behaviour outside the corpus.
@@ -100,8 +99,7 @@ Not covered: the normative fixtures do not include normative rect, circle or col
 
 Only Go is a published full implementation (module `github.com/enmaq/mdgl/go`, tags `v0.2.0` and `go/v0.2.0`).
 The published npm `@enmaq/mdgl`, crates.io `mdgl` and PyPI `mdgl` 0.2.0 packages remain limited header/resource seed
-checks. The current Rust, C, TypeScript and Python cores and adapters are **unreleased** (`VERSION` is still
-0.2.0). JavaScript is the compiled TypeScript: one implementation, one npm package.
+checks. The current Rust, C, TypeScript and Python cores and adapters are the **0.3.0 release candidate in source, not yet published** (`VERSION` is 0.3.0; published is still 0.2.0). JavaScript is the compiled TypeScript: one implementation, one npm package.
 
 Known C limitation: the C library builds with `_GNU_SOURCE` (for `M_PI`), and its locale-dependent test
 (`c/test_locale.c`, run with `de_DE.UTF-8`) is **skipped** (exit 77) when that locale is not installed, so the
@@ -138,7 +136,7 @@ normative rule; each is a candidate for a SPEC change (section 10). They are kep
    identical to Go, Rust, C and Python. Three cross-language boundary fixtures exist (`obs_circle_r100_accept`
    normative; `obs_circle_r101_reject` and `obs_circle_r0_reject` non-normative, ASSUMES G4). The circle bound
    clarification (radius <= 100 / diameter <= 200) is confirmed by the five adapters on the three circle boundary
-   fixtures (targeted run); independent verification of the full 86-fixture corpus is pending. SPEC does not pin the
+   fixtures (targeted run); the full 86-fixture corpus then passed on all five adapters in an independent verification on 2026-10-10 UTC (accepted by the coordinator); 0.3 integration verification is still pending. SPEC does not pin the
    diagnostic wording or position, so the agreement on wording is an observation, not a SPEC rule. The 83-fixture
    results in section 4.2 were recorded before these fixtures.
 
@@ -161,7 +159,7 @@ normative rule; each is a candidate for a SPEC change (section 10). They are kep
 
 ## 6. Compatibility and versioning [INFORMATIVE]
 
-The `mdgl 0.1` header is the grammar version defined by `SPEC.md`. The package `VERSION` (currently 0.2.0) is
+The `mdgl 0.1` header is the grammar version defined by `SPEC.md`. The package `VERSION` (currently 0.3.0, release candidate) is
 separate and does not change the grammar version. At 0.x only the latest minor is supported; there is no
 deprecation or ABI/API stability promise before 1.0 ([README.md](../README.md), [CHANGELOG.md](../CHANGELOG.md)).
 Syntax changes go through an RFC in `rfcs/NNNN-title.md` ([CONTRIBUTING.md](../CONTRIBUTING.md)). Unknown scene keys
@@ -229,8 +227,8 @@ Each item: current behaviour, then a **PROPOSAL**. No item is a SPEC rule.
     SPEC text or keep their fixtures non-normative.
 14. **Circle size bound.** Resolved (project decision). The project
     maintainers clarified in SPEC.md that the maximum is radius <= 100 (diameter <= 200); see 4.4 item 5.
-    Three boundary fixtures exist and the five adapters agree on them (targeted run); independent verification of
-    the full 86-fixture corpus is pending. Numbering of other items is unchanged.
+    Three boundary fixtures exist and the five adapters agree on them (targeted run); the full 86-fixture
+    corpus later passed independent verification on 2026-10-10 UTC (accepted by the coordinator); 0.3 integration verification is still pending. Numbering of other items is unchanged.
 
 ## 11. References
 

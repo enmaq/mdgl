@@ -1,6 +1,6 @@
 {
   "name": "@enmaq/mdgl",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "MDGL 0.1 parser, checker, evaluator and terminal-cell renderer (development tree; 0.2.0 on npm is the earlier subset checker).",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -51,6 +51,7 @@
     "typescript": "5.9.3"
   },
   "bin": {
+    "mdgl": "bin/mdgl.js",
     "mdgl-adapter": "bin/mdgl-adapter.js"
   }
 }

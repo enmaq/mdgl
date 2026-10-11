@@ -4,22 +4,22 @@ One npm package for JavaScript and TypeScript. TypeScript source is `src/`
 (`parse.ts` syntax, `check.ts` semantics); `npm run build` (`tsc`) compiles it to
 `dist/*.js` (CommonJS) plus `.d.ts`. `dist/` is a build artifact and is not committed.
 
-## Status (development tree)
+## Status (0.3.0 release candidate in source, not yet published)
 
 Implemented: full MDGL 0.1 lexical parsing and semantic checking per `SPEC.md`:
 Go-style quoted escapes, UTF-8 byte columns, finite non-exponent decimals,
 scene/actor/action ordering, actor references, forward parents and cycles, all
 actor and action argument types, duplicates and unknowns with did-you-mean,
 overlapping properties, timing/period/repeat/fallback, and the stage, count and
-text limits. Also implemented (development tree): evaluator and terminal-cell renderer (`compile`, `frameNs`,
+text limits. Also implemented in source: evaluator and terminal-cell renderer (`compile`, `frameNs`,
 `fallbackFrame`; all nine actions, easing, repeat/Done/fallback, parent transforms, text, braille rect/circle,
 wire cube) and the NDJSON conformance adapter (`bin/mdgl-adapter.js`, `handleLine`). Provisional: results against the
 shared runner are not conformance certification; rect/circle follow a coordinator reference profile, not SPEC text.
-All of this is unreleased. In the final integration (2026-10-10 UTC) it passed, together with the four other adapters, the 83-fixture corpus (63 normative + 20 non-normative) under the bounded protocol-v1 profile; that is bounded evidence, not a universal SPEC certification.
+All of this is a release candidate in source, not yet published. In the final integration (2026-10-10 UTC) it passed, together with the four other adapters, the 83-fixture corpus (63 normative + 20 non-normative) under the bounded protocol-v1 profile; that is bounded evidence, not a universal SPEC certification.
 Braille lines are quantized to 1e-9, clipped to the stage dot box, then stepped (ceil of the longer span, 1..800), as the SPEC
 rule and the coordinator reference profile state; this reproduces all 24 cube fixtures. No full-conformance claim: rect/circle and cube colour have only
 non-normative reference-profile observable fixtures (`obs_ref_*`), and normative rect/circle coverage is still an open gap.
-The published 0.2.0 package is only the earlier limit/header subset checker.
+The published 0.2.0 package is only the earlier limit/header subset checker. `npm install @enmaq/mdgl` gives that 0.2.0 seed, not the player below; to use `mdgl play` before 0.3.0 is published, build from source (`npm run build` in `ts/`).
 
 ## API
 
@@ -57,6 +57,30 @@ node examples/render.mjs --fallback                              # fallback fram
 
 Invalid MDGL prints `file:line:col: message` and exits 1; unreadable files or a bad `--time` exit 2.
 Circle radius is limited to 100 (diameter 200); rect and cube sizes to 200.
+
+## Terminal player: `mdgl play FILE`
+
+The package installs an `mdgl` command (and the `mdgl-adapter` conformance adapter):
+
+```
+npm install @enmaq/mdgl        # or: npx -p @enmaq/mdgl mdgl play scene.mdgl
+mdgl play scene.mdgl           # animate in the terminal; Ctrl+C stops
+mdgl check scene.mdgl          # validate; file:line:col: message on stderr
+mdgl frames scene.mdgl --at 0,1.5   # print frames at absolute seconds
+```
+
+Playback follows the SPEC: frame time is the monotonic elapsed time (late timers drop frames, never
+change state), the scene `fps` sets the rate, only changed cells are rewritten (fg and bg), each
+update is one DEC synchronized-output (mode 2026) chunk, and the cursor is hidden and restored on every exit path. Finite scenes stop
+when the evaluator reports done; infinite repeat runs until interrupted. Cell glyphs are sanitised, so
+a scene can never inject terminal escapes. When stdout is not a terminal, or `NO_COLOR` or
+`MDGL_REDUCED_MOTION` is set to a non-empty value, `play` prints the plain fallback frame once, with no escapes or timers.
+
+Exit codes: 0 normal, 1 invalid scene or output error, 2 usage error or unreadable file, 130 Ctrl+C, 143 SIGTERM.
+Limits: the terminal must be at least as wide and tall as the scene (no resize handling); `play` needs an ANSI terminal.
+
+Library: `play(scene, {write, clock, onWriteError?, onInterrupt?})` returns `{done, stop}` and does no I/O itself;
+`examples/play.mjs` shows the wiring, and `plainFallback(scene)` gives the redirected-output text.
 
 ## Development
 

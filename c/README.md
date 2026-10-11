@@ -1,11 +1,11 @@
-# MDGL for C (development: parser, checker, evaluator, renderer, adapter)
+# MDGL for C (0.3.0 release candidate in source: parser, checker, evaluator, renderer, adapter, player)
 
-Unreleased development tree. In the final integration (2026-10-10 UTC) it passed, together with the four other adapters, the 83-fixture corpus (63 normative + 20 non-normative) under the bounded protocol-v1 profile; that is bounded evidence, not a universal SPEC certification. Limitation: the library builds with `_GNU_SOURCE`, and the locale-dependent test is skipped when `de_DE.UTF-8` is not installed.
+0.3.0 release candidate in source, not yet published. In the final integration (2026-10-10 UTC) it passed, together with the four other adapters, the 83-fixture corpus (63 normative + 20 non-normative) under the bounded protocol-v1 profile (current corpus: 86 fixtures, 64 normative + 22 non-normative; independent verification pending); that is bounded evidence, not a universal SPEC certification. Limitation: the library builds with `_GNU_SOURCE`, and the locale-dependent test is skipped when `de_DE.UTF-8` is not installed.
 
 C99, dependency-free (libm only) parser and semantic checker for
 [MDGL](https://github.com/enmaq/mdgl) 0.1, ported from the Go reference
 (`parse` + `check`). The first diagnostic equals Go's `line:column: message`
-(one-based UTF-8 byte columns). Declared version is still `0.2.0`; the
+(one-based UTF-8 byte columns). Declared version is `0.3.0` (release candidate); the
 published 0.2.0 C source tarball was a limited header/resource seed only and does not have
 anything described here.
 
@@ -63,6 +63,27 @@ Go); new scene/actor/action types, `mdgl_parse_n`, `mdgl_scene_check`,
 cases), `test_locale.c <locale>` (skips with 77 if unavailable), `test_oom.c`
 (failure injection, GNU ld). Regenerate tables: `python3 gen_unicode.py
 $(go list -m -f '{{.Dir}}' github.com/rivo/uniseg) > mdgl_unicode.h`.
+
+## Command line and terminal player
+
+```sh
+cmake -S . -B build && cmake --build build
+cmake --install build --prefix "$HOME/.local"      # installs bin/mdgl, lib/libmdgl.a, include/mdgl*.h, docs
+mdgl play ../examples/text.mdgl                     # animate in a terminal; Ctrl+C stops
+mdgl check FILE | mdgl frames FILE --at 0,1.5 | mdgl --help
+```
+
+`mdgl play` runs the scene at its own `fps` using the absolute monotonic clock (elapsed = now - start,
+never accumulated ticks; a late tick drops frames), redraws only changed cells (foreground and background
+colours included) inside DEC synchronized-output (mode 2026) blocks, stops when the evaluator reports done
+(`repeat=infinite` runs until interrupted), and always restores the terminal (sync off, attributes reset,
+cursor shown, newline) on done, Ctrl+C/SIGTERM and write errors. It never clears the screen. When stdout is not a terminal, or `NO_COLOR` or
+`MDGL_REDUCED_MOTION` is set and non-empty, it prints the scene's fallback frame once as plain text, with no
+timer and no escape sequences. Cell data never reaches the terminal as a control byte.
+Exit status: 0 ok, 1 invalid scene (`FILE:LINE:COL: MESSAGE` on stderr), 2 usage, unreadable file or
+write error, 130 interrupted. POSIX only for animation (Windows prints the plain frame). Library use:
+`mdgl_play.h` (`mdgl_play`, `mdgl_play_plain`) takes an injectable clock, writer, sleeper and interrupt test;
+`test_play.c` drives it deterministically and `test_play_pty.py` runs the real binary on a pseudo-terminal.
 
 ## Quick start: render one frame
 

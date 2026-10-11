@@ -80,6 +80,13 @@ jobs:
           out=$(cd go && go run ./examples/render -t 4)
           printf '%s\n' "$out"
           printf '%s' "$out" | grep -q '[^[:space:]]'
+      - name: player smoke (go)
+        shell: bash
+        run: |
+          set -eo pipefail
+          tmp=$(mktemp -d)
+          (cd go && go build -o "$tmp/mdgl" ./cmd/mdgl)
+          python3 scripts/player-smoke.py --name go --int-code 0 -- "$tmp/mdgl"
       - name: example smoke (rust)
         shell: bash
         run: |
@@ -87,6 +94,12 @@ jobs:
           out=$(cd rust && cargo run -q --example render -- --at 4)
           printf '%s\n' "$out"
           printf '%s' "$out" | grep -q '[^[:space:]]'
+      - name: player smoke (rust)
+        shell: bash
+        run: |
+          set -eo pipefail
+          (cd rust && cargo build -q --bin mdgl)
+          python3 scripts/player-smoke.py --name rust -- rust/target/debug/mdgl
       - name: example smoke (c)
         shell: bash
         run: |
@@ -96,6 +109,12 @@ jobs:
           out=$(cd c && ./build/mdgl_render --time 4)
           printf '%s\n' "$out"
           printf '%s' "$out" | grep -q '[^[:space:]]'
+      - name: player smoke (c)
+        shell: bash
+        run: |
+          set -eo pipefail
+          cmake --build c/build --target mdgl_cli
+          python3 scripts/player-smoke.py --name c -- c/build/mdgl
       - name: example smoke (js)
         shell: bash
         run: |
@@ -103,6 +122,11 @@ jobs:
           out=$(cd ts && npm run --silent example:js -- --time 4)
           printf '%s\n' "$out"
           printf '%s' "$out" | grep -q '[^[:space:]]'
+      - name: player smoke (js)
+        shell: bash
+        run: |
+          set -eo pipefail
+          python3 scripts/player-smoke.py --name js -- node ts/bin/mdgl.js
       - name: example smoke (typescript)
         shell: bash
         run: |
@@ -117,3 +141,8 @@ jobs:
           out=$(cd python && PYTHONPATH=. python examples/render.py --time 4)
           printf '%s\n' "$out"
           printf '%s' "$out" | grep -q '[^[:space:]]'
+      - name: player smoke (python)
+        shell: bash
+        run: |
+          set -eo pipefail
+          python3 scripts/player-smoke.py --name python -- env PYTHONPATH=python python3 -m mdgl
