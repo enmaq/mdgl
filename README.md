@@ -1,8 +1,8 @@
 # MDGL — MarkdownGL
 
-![A rotating wire cube, rendered as terminal braille cells](docs/media/cube-rotate.gif)
+![A neon cube intro with a title, rendered as animated terminal braille cells](docs/media/neon-cube.gif)
 
-*A rotating wire cube, rendered as terminal braille cells. [Full video](docs/media/cube-rotate.mp4).*
+*A neon cube intro, rendered as animated terminal braille cells. [Full video](docs/media/neon-cube.mp4).*
 
 Why does it exist? More and more engineering now happens over SSH, in terminals, side by side
 with coding agents. Sooner or later you need more than static text there: animated 2D and 3D
@@ -34,9 +34,9 @@ and reduced-motion users.
 
 ## Videos
 
-- [Writing a scene: type and fade](docs/media/type-fade.mp4) ([GIF](docs/media/type-fade.gif)).
-- [Wire cube rotation](docs/media/cube-rotate.mp4) ([GIF](docs/media/cube-rotate.gif)) — the lead demo above.
-- [Token moving along arrows](docs/media/move-path.mp4) ([GIF](docs/media/move-path.gif)).
+- [Neon cube intro](docs/media/neon-cube.mp4) ([GIF](docs/media/neon-cube.gif)) — the lead demo above.
+- [Kubernetes: from desired state to a running service](docs/media/kubernetes.mp4) ([GIF](docs/media/kubernetes.gif)).
+- [LLM inference: tokens to the next-token loop](docs/media/llm.mp4) ([GIF](docs/media/llm.gif)).
 
 ## Install and use
 

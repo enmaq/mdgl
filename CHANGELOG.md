@@ -5,6 +5,8 @@ All notable changes to MDGL. The format follows [Keep a Changelog](https://keepa
 
 ## [Unreleased]
 
+- Documentation only: the README now leads with the neon cube preview and lists the neon-cube, Kubernetes and LLM videos; no code, API or version change.
+
 ## [0.3.1] - 2026-10-11
 
 ### Added
