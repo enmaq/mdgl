@@ -44,7 +44,11 @@ and reduced-motion users.
 plays a fenced `mdgl` block in place, and a human and an agent can edit the same page. Any scene in [`examples/`](examples/) works
 the same way: paste the contents of, for example, [`examples/kubernetes.mdgl`](examples/kubernetes.mdgl) into an `mdgl` fence on a
 canvas and it animates there, reusable as a live diagram the team can discuss.
-[TLDRQ's own canvas demo](https://github.com/enmaq/tldrq/blob/main/docs/media/canvas.mp4) shows an animated page being edited live.
+
+[![The Kubernetes MDGL scene playing inside a real TLDRQ Canvas](https://raw.githubusercontent.com/enmaq/tldrq/main/docs/media/canvas-mdgl-k8s.gif)](https://github.com/enmaq/tldrq/blob/main/docs/media/canvas-mdgl-k8s.mp4)
+
+The Kubernetes MDGL scene playing inside a TLDRQ Canvas. [Click for the full video](https://github.com/enmaq/tldrq/blob/main/docs/media/canvas-mdgl-k8s.mp4).
+
 **[Try TLDRQ — installation instructions](https://github.com/enmaq/tldrq#install)**. Standalone MDGL installation and usage are described below.
 
 ## Install and use

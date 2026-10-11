@@ -5,7 +5,7 @@ All notable changes to MDGL. The format follows [Keep a Changelog](https://keepa
 
 ## [Unreleased]
 
-- Documentation only: README section 'MDGL in a TLDRQ canvas' linking the public TLDRQ repository, its installation instructions and its canvas demo; no code, API or version change.
+- Documentation only: README section 'MDGL in a TLDRQ canvas' linking the public TLDRQ repository and its installation instructions, with an inline preview of the Kubernetes scene playing in a TLDRQ Canvas (media hosted in the TLDRQ repository); no code, API or version change.
 - Documentation only: the README now leads with the neon cube preview and lists the neon-cube, Kubernetes and LLM videos; no code, API or version change.
 
 ## [0.3.1] - 2026-10-11
