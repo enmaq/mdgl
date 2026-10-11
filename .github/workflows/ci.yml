@@ -146,3 +146,45 @@ jobs:
         run: |
           set -eo pipefail
           python3 scripts/player-smoke.py --name python -- env PYTHONPATH=python python3 -m mdgl
+  example-media-e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: ts/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+          cache-dependency-path: go/go.sum
+      - uses: dtolnay/rust-toolchain@stable
+      - name: install ffmpeg, DejaVu font and Pillow
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends ffmpeg fonts-dejavu-core cmake
+          python3 -m pip install "Pillow==10.2.0"
+      - name: build five adapters, compare every frame, export media
+        run: >
+          python3 scripts/example-media.py export
+          --out "${{ runner.temp }}/example-media/out"
+          --failure-report "${{ runner.temp }}/example-media/failure-{scene}.json"
+      - name: upload media and manifest
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: example-media
+          path: ${{ runner.temp }}/example-media/out
+          if-no-files-found: error
+      - name: upload failure report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: example-media-failure
+          path: ${{ runner.temp }}/example-media/failure-*.json
+          if-no-files-found: ignore

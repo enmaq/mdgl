@@ -1,0 +1,49 @@
+scene width=90 height=28 period=12s repeat=infinite fallback=@6
+actor frame = rect(90, 28, border=round, title="N E O N") at (0, 0) color=magenta
+actor big = cube(size=26,style=wire) at (center, center) color=cyan
+actor core = cube(size=12,style=wire) at (center, center) color=magenta
+actor tl = cube(size=6,style=wire) at (left+2, top+1) color=yellow
+actor tr = cube(size=6,style=wire) at (right-2, top+1) color=green
+actor bl = cube(size=6,style=wire) at (left+2, bottom-1) color=green
+actor br = cube(size=6,style=wire) at (right-2, bottom-1) color=yellow
+actor orb = text("*") at (80, 13) color=white
+actor tag = text("C U B E   I N T R O") at (center, bottom-2) color=cyan
+@0: frame.fade(in, dur=1, ease=ease-out)
+@0.5: big.fade(in, dur=1.5, ease=ease-out)
+@1.2: core.fade(in, dur=1.2, ease=ease-out)
+@1.8: tl.fade(in, dur=0.8)
+@2.1: tr.fade(in, dur=0.8)
+@2.4: bl.fade(in, dur=0.8)
+@2.7: br.fade(in, dur=0.8)
+@2.5: tag.type(per_char=0.08)
+@0: big.rotate(x=360, y=720, z=180, dur=12, ease=linear)
+@0: core.rotate(x=-360, y=360, z=-360, dur=12, ease=linear)
+@0: tl.rotate(x=360, y=-360, dur=12, ease=linear)
+@0: tr.rotate(x=720, y=-360, dur=12, ease=linear)
+@0: bl.rotate(x=360, y=-720, dur=12, ease=linear)
+@0: br.rotate(x=720, y=-720, dur=12, ease=linear)
+@2: big.color(to=blue, dur=0.4)
+@4: big.color(to=magenta, dur=0.4)
+@6: big.color(to=red, dur=0.4)
+@8: big.color(to=yellow, dur=0.4)
+@10: big.color(to=green, dur=0.4)
+@11: big.color(to=cyan, dur=0.4)
+@3: core.color(to=yellow, dur=0.4)
+@5: core.color(to=cyan, dur=0.4)
+@7: core.color(to=green, dur=0.4)
+@9: core.color(to=red, dur=0.4)
+@11: core.color(to=blue, dur=0.4)
+@4: frame.color(to=cyan, dur=0.4)
+@8: frame.color(to=magenta, dur=0.4)
+@0: orb.move(to=(75, 18), dur=1, ease=linear)
+@1: orb.move(to=(62, 22), dur=1, ease=linear)
+@2: orb.move(to=(44, 23), dur=1, ease=linear)
+@3: orb.move(to=(26, 22), dur=1, ease=linear)
+@4: orb.move(to=(13, 18), dur=1, ease=linear)
+@5: orb.move(to=(8, 13), dur=1, ease=linear)
+@6: orb.move(to=(13, 8), dur=1, ease=linear)
+@7: orb.move(to=(26, 4), dur=1, ease=linear)
+@8: orb.move(to=(44, 3), dur=1, ease=linear)
+@9: orb.move(to=(62, 4), dur=1, ease=linear)
+@10: orb.move(to=(75, 8), dur=1, ease=linear)
+@11: orb.move(to=(80, 13), dur=1, ease=linear)

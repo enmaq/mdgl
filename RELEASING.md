@@ -112,13 +112,13 @@ and is superseded by `@enmaq/mdgl`.
 2. Continuing releases are enabled (`MDGL_PUBLISH: "1"`): the cohort job publishes automatically when
    `VERSION` or relevant shared sources change. For a local dry run, run
    `scripts/publish-mdgl-packages.sh --cohort` without `--publish`.
-3. Registry name state is rechecked automatically in the publisher preflight. Current published
-   names: crates.io `mdgl`, PyPI `mdgl`, npm `@enmaq/mdgl` (all at 0.3.0; npm is scoped
+3. Registry name state is rechecked automatically in the publisher preflight. Package
+   names: crates.io `mdgl`, PyPI `mdgl`, npm `@enmaq/mdgl` (version 0.3.1; npm is scoped
    because unscoped `mdgl` was refused as too similar to existing names). Future releases bump
    `VERSION`; the cohort job skips identical existing versions.
 4. Verify ownership by hand and set the attestations below.
-5. Publishing stays enabled; the owner flags below remain `"0"`, so a later `VERSION` bump for
-   crates.io and PyPI is refused until a human attests ownership.
+5. Publishing stays enabled; the owner flags below default to `"0"`, and a `VERSION` bump for
+   crates.io and PyPI is refused until a human attests ownership; the cohort job sets them to `"1"` after the human attestation.
 
 Owner attestations (`MDGL_CRATES_OWNER_CONFIRMED`, `MDGL_PYPI_OWNER_CONFIRMED`, both `"0"` by
 default) are statements by a human, not checks. crates.io `/api/v1/me` accepts only a browser
@@ -172,7 +172,7 @@ deprecation promise before 1.0: anything may change between minor versions, reco
 passed the 86-fixture corpus under the bounded protocol-v1 profile (independent verification, 2026-10-10 UTC, accepted by the coordinator); this is bounded evidence, not a full-conformance claim.
 
 Package version versus grammar version: the shared MDGL package version (`VERSION`, currently
-0.3.0) is distinct from the language identifier. The `mdgl 0.1` header in a scene is the grammar
+0.3.1) is distinct from the language identifier. The `mdgl 0.1` header in a scene is the grammar
 version defined by `SPEC.md`; it does not change when `VERSION` changes.
 
 Compatibility statement: before 1.0 (0.x) there is no ABI or API stability promise in any

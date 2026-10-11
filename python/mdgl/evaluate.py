@@ -56,6 +56,11 @@ class State:
     done: bool = False
 
 
+def _ns(seconds):
+    """Integer nanoseconds of an already ns-rounded time (exact: the float is within 1e-7 of the integer)."""
+    return round(seconds * 1e9)
+
+
 def _mix(a, b, p):
     return a + (b - a) * p
 
@@ -110,7 +115,9 @@ def at(scene, time):
         w, h = _extent(scene, a, names)
         state.actors.append(ActorState(a, resolve(a.x, w, a.width), resolve(a.y, h, a.height), a.z, color=a.color))
     initialized = set()
+    now = _ns(time)
     for act in sorted(scene.actions, key=lambda x: x.begin):
+        begin, dur = _ns(act.begin), _ns(act.duration)
         t = state.actors[names[act.actor]]
         key = act.actor + "/" + act.property
         first = act.args.get("0")
@@ -121,14 +128,13 @@ def at(scene, time):
                 t.opacity = 0.0
             if act.verb == "type" or (act.verb == "wipe" and first == "in"):
                 t.reveal = 0.0
-            if act.verb == "slide" and first == "in" and time < act.begin:
+            if act.verb == "slide" and first == "in" and now < begin:
                 t.x, t.y = _outside(scene, t, act.args["to"].text, names)
-        if time < act.begin:
+        if now < begin:
             continue
-        progress = 1.0
-        if act.duration > 0:
-            progress = min(1.0, (time - act.begin) / act.duration)
-        if time >= to_nanos(act.begin + act.duration):
+        # integer-ns first (root decision): no float subtraction noise at exact boundaries
+        progress = min(1.0, (now - begin) / dur) if dur > 0 else 1.0
+        if now >= begin + dur:
             progress = 1.0
         eased = ease(act.ease, progress)
         v = act.verb
@@ -156,7 +162,7 @@ def at(scene, time):
                 t.reveal = 1.0
             else:
                 # SPEC: floor(elapsed / per_char) in exact integer nanoseconds (no float epsilon)
-                steps = round((time - act.begin) * 1e9) // round(number(act.args["per_char"]) * 1e9)
+                steps = (now - begin) // _ns(number(act.args["per_char"]))
                 t.reveal = min(count, steps) / count
         elif v == "wipe":
             t.reveal = eased if first == "in" else 1 - eased

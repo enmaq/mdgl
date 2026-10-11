@@ -26,6 +26,45 @@ static void at(const char *name, const char *src, long long ns, int col, unsigne
     mdgl_frame_free(&f); mdgl_scene_free(sc);
 }
 
+/* Nanosecond-first progress: exact midpoints must land on the right side of the 0.5 thresholds. */
+static void fg_is(const char *name, const char *src, long long ns, const char *want) {
+    mdgl_scene_t *sc = load(src);
+    mdgl_frame_t f;
+    if (!sc) return;
+    if (mdgl_frame_ns(sc, ns, 200, 60, &f, NULL)) { printf("FAIL %s: frame\n", name); failures++; mdgl_scene_free(sc); return; }
+    if (strcmp(f.cells[0].fg, want)) { printf("FAIL %s: got %s want %s\n", name, f.cells[0].fg, want); failures++; }
+    mdgl_frame_free(&f); mdgl_scene_free(sc);
+}
+static void midpoints(void) {
+    char src[256];
+    static const char *const H = "scene width=4 height=1 fallback=end\nactor a = text(\"A\") at (0,0)";
+    fg_is("fade 2.4+.8 at 2.8", "scene width=4 height=1 fallback=end\nactor a = text(\"A\") at (0,0) color=green\n@2.4: a.fade(in, dur=0.8)\n", 2800000000LL, "#008000");
+    fg_is("fade 1ns before", "scene width=4 height=1 fallback=end\nactor a = text(\"A\") at (0,0) color=green\n@2.4: a.fade(in, dur=0.8)\n", 2799999999LL, "#007f00");
+    fg_is("fade 1ns after", "scene width=4 height=1 fallback=end\nactor a = text(\"A\") at (0,0) color=green\n@2.4: a.fade(in, dur=0.8)\n", 2800000001LL, "#008000");
+    fg_is("fade control 4.0+.4 at 4.2", "scene width=4 height=1 fallback=end\nactor a = text(\"A\") at (0,0) color=green\n@4: a.fade(in, dur=0.4)\n", 4200000000LL, "#008000");
+    snprintf(src, sizeof src, "%s\n@8: a.color(to=red, dur=0.4)\n", H);
+    fg_is("color 8+.4 at 8.2", src, 8200000000LL, "red");
+    fg_is("color 1ns before", src, 8199999999LL, "normal");
+    fg_is("color 1ns after", src, 8200000001LL, "red");
+    snprintf(src, sizeof src, "%s\n@4: a.color(to=red, dur=0.4)\n", H);
+    fg_is("color control 4+.4 at 4.2", src, 4200000000LL, "red");
+    /* bounded neon sweep: begin = t - 0.2, dur 0.4 puts progress exactly 0.5 at t */
+    static const struct { const char *b; long long t; } M[] = {{"2.6", 2800000000LL}, {"8", 8200000000LL}, {"9", 9200000000LL}, {"10", 10200000000LL}, {"11", 11200000000LL}};
+    for (size_t i = 0; i < sizeof M / sizeof M[0]; i++) {
+        char nm[48];
+        snprintf(nm, sizeof nm, "color mid %s", M[i].b);
+        snprintf(src, sizeof src, "%s\n@%s: a.color(to=red, dur=0.4)\n", H, M[i].b);
+        fg_is(nm, src, M[i].t, "red");
+        fg_is(nm, src, M[i].t - 1, "normal");
+        snprintf(nm, sizeof nm, "fade mid %s", M[i].b);
+        snprintf(src, sizeof src, "scene width=4 height=1 fallback=end\nactor a = text(\"A\") at (0,0) color=green\n@%s: a.fade(in, dur=0.4)\n", M[i].b);
+        fg_is(nm, src, M[i].t, "#008000");
+        fg_is(nm, src, M[i].t - 1, "#007f00");
+    }
+    /* eased midpoint: ease-in-out is symmetric, so exactly half progress is exactly half opacity */
+    fg_is("ease-in-out midpoint", "scene width=4 height=1 fallback=end\nactor a = text(\"A\") at (0,0) color=green\n@2.4: a.fade(in, dur=0.8, ease=ease-in-out)\n", 2800000000LL, "#008000");
+}
+
 int main(void) {
     at("static color", S "", 0, 0, 'A', "normal", 1);
     at("E3 colour kept", "scene width=8 height=1 fallback=end\nactor a = text(\"AB\") at (0, 0) color=red\n", 0, 1, 'B', "red", 1);
@@ -44,6 +83,7 @@ int main(void) {
     at("wide is FFFD", "scene width=8 height=1 fallback=end\nactor a = text(\"\xE4\xB8\x80z\") at (0, 0)\n", 0, 0, 0xFFFD, "normal", 1);
     at("zero-width keeps its cell", "scene width=8 height=1 fallback=end\nactor a = text(\"\xCC\x81z\") at (0, 0)\n", 0, 0, ' ', "normal", 1);
     at("flag is one wide cell", "scene width=8 height=1 fallback=end\nactor a = text(\"\xF0\x9F\x87\xA6\xF0\x9F\x87\xA7z\") at (0, 0)\n", 0, 1, 'z', "normal", 1);
+    midpoints();
     {   /* fallback = end ignores time; width/height clamp to the scene */
         mdgl_scene_t *sc = load(S "@0: a.move(to=(2, 0), dur=1)\n");
         mdgl_frame_t f;

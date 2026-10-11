@@ -40,11 +40,11 @@ and reduced-motion users.
 
 ## Install and use
 
-MDGL 0.3.0 is published for all five languages; see [Language support](#language-support) for the exact install commands.
+This is MDGL 0.3.1 for all five languages; see [Language support](#language-support) for the exact install commands.
 The CLI shown here is the Go one:
 
 ```
-go install github.com/enmaq/mdgl/go/cmd/mdgl@v0.3.0
+go install github.com/enmaq/mdgl/go/cmd/mdgl@v0.3.1
 
 # Historical: the old root-module CLI (v0.1.1) predates the move and is superseded:
 # go install github.com/enmaq/mdgl/cmd/mdgl@v0.1.1
@@ -55,6 +55,64 @@ mdgl play scene.mdgl                    # animate in the terminal (Ctrl+C stops)
 ```
 
 Ready-made scenes are in [`examples/`](examples/). `MDGL.md` is a one-page primer for LLMs.
+
+### Play the three showcase demos
+
+From a checkout (Python 3 and Go on `PATH`, and a UTF-8 terminal):
+
+```sh
+cd v/mdgl && python3 scripts/example-media.py              # or: python3 <checkout>/v/mdgl/scripts/example-media.py
+python3 scripts/example-media.py play examples/llm.mdgl --loops 1   # one scene
+```
+
+It plays `neon-cube`, `kubernetes` and `llm` once each (every scene is finite here, about 77 seconds in all (measured)), in ANSI
+colour with Unicode braille. Ctrl+C stops it and restores the terminal. When stdout is redirected, or `NO_COLOR` or
+`MDGL_REDUCED_MOTION` is non-empty, it prints each scene's plain fallback frame once with no escape sequences. `--loops N` repeats
+each scene; `--forever` is the only unbounded mode. Use a terminal of at least 100 columns by 35 rows (110x40 recommended): the
+widest scenes are 96 columns (`kubernetes`, `llm`), the tallest 34 rows (`kubernetes`) plus a title line. A smaller terminal is
+unsupported (no clipping or resize handling). `play` uses only the Go adapter (comparison across all five languages and the GIF/MP4
+export are the `verify` and `export` subcommands below). Diagnostics go to stderr.
+
+#### Verify and export the demos (all five adapters)
+
+```sh
+python3 scripts/example-media.py verify                      # build, check, compare; writes only the manifest
+python3 scripts/example-media.py export [SCENE.mdgl ...] [--out DIR] [--formats gif,mp4]   # verify, then GIF/MP4 + manifest
+python3 scripts/example-media.py export --out docs/media --formats gif    # how the repository assets are produced
+```
+
+The default scenes are the three above and the default `--out` is a new temp directory that is printed. Both commands copy the
+sources (`go rust c ts python conformance examples`, no build outputs) to an isolated temp stage and build all five adapters
+there (Go, Rust release, C via CMake, TypeScript via `npm ci` then `npm run build`, Python in place), so the repository is never
+written and no preexisting `node_modules`, `dist` or `target` is needed. Required tools: `go`, `cargo`+`rustc`, `cmake`+`cc`,
+`node`+`npm` (`npm ci` needs the registry or a warm npm cache; likewise the Go and Cargo module downloads), `python3`; `export` also
+needs Pillow, `ffmpeg` (with libx264 for MP4) and `/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf` (package `fonts-dejavu-core`).
+
+What is compared: `check` on each scene through each adapter, then every frame at integer `time_ns = round(k*1e9/fps)` across one
+period (explicit period) or the finite duration, plus the exact end frame once for finite scenes (the same sampling as `play`:
+an infinite scene never requests a time at or past its period). Every adapter is asked for the frame in turn and the answers are
+compared immediately, so only one frame is held at a time. The comparison is exact: every cell's rune, fg and bg, the frame size
+and `done`; there is no trimming or normalisation. The `fallback:true` frame is compared separately. The first difference stops
+that scene and prints the scene, `time_ns`, frame index, row, column, both adapters and both cells; a JSON failure report is
+written (`--failure-report`, default a temp dir) and the exit code is 1. Other exit codes: 2 usage, 3 required tool unavailable,
+4 build failed, 5 protocol or transport failure (or a malformed response), 6 invalid scene, 7 raster/encode failure.
+
+Only after every scene agrees across all five adapters are the frames rasterised (Pillow, DejaVu Sans Mono, 8x16 px cells, the
+`play` colour palette, black where the background is empty, braille drawn procedurally from its U+2800 dot mask, 2x4 dots per cell) and encoded with ffmpeg
+(`-fflags +bitexact -map_metadata -1 -an`, GIF with `palettegen` and no dithering, MP4 with libx264 `crf 23`, one thread).
+The media use every `ceil(fps/10)`-th agreed frame (at most 10 frames per second; the comparison itself covers every frame) and
+a finite scene's last frame is held for 1 s. A failing run publishes no media: files are copied to `--out` only at the very end.
+
+`example-media-manifest.json` is written next to the media. It holds, per scene, the relative path and sha256, the frame counts,
+the sha256 of every frame's canonical cell grid (cells and `done`) and of the whole sequence, the fallback frame hash, the
+adapter commands with placeholder paths, the tool versions, the font file name and sha256, the raster metrics and the ffmpeg
+flags, and the media files' sha256. It has no timestamps and no absolute paths. Honest limits: the frame and sequence hashes are
+the deterministic evidence; encoded GIF/MP4 bytes are only reproducible with the same ffmpeg and font versions and no byte
+identity across encoders or fonts is claimed. The comparison shows the five adapters agree on these three scenes; it does not
+prove the output matches SPEC. CI (`example-media-e2e` in `.github/workflows/ci.yml`) runs the same `export` command and
+uploads the media, manifest and any failure report as workflow artifacts; it never commits.
+
+Previews: ![neon-cube](docs/media/neon-cube.gif) ![kubernetes](docs/media/kubernetes.gif) ![llm](docs/media/llm.gif)
 
 ## Embedding (Go)
 
@@ -99,12 +157,12 @@ Created and maintained by Victor Brunko; see [AUTHORS](AUTHORS).
 | Conformance adapter ([`conformance/`](conformance/)) | YES | YES | YES | YES | YES |
 | Terminal player (`mdgl play FILE`) | YES | YES | YES | YES | YES |
 | Runnable example | `go run ./examples/render` (in `go/`) | `cargo run --example render` (in `rust/`) | in `c/`: `cmake -S . -B build && cmake --build build --target mdgl_render`, then `./build/mdgl_render` | `ts/examples/render.mjs` ([`ts` README](ts/README.md#examples)) | `python examples/render.py` (in `python/`) |
-| Install 0.3.0 | `go install github.com/enmaq/mdgl/go/cmd/mdgl@v0.3.0` | `cargo install mdgl --version 0.3.0 --locked` | source build, no registry: `cmake -S c -B c/build && cmake --build c/build` (see [`c/README.md`](c/README.md)) | `npm install @enmaq/mdgl@0.3.0` (or `npx -p @enmaq/mdgl@0.3.0 mdgl play scene.mdgl`) | `pip install mdgl==0.3.0`, then `mdgl play FILE` |
+| Install 0.3.1 | `go install github.com/enmaq/mdgl/go/cmd/mdgl@v0.3.1` | `cargo install mdgl --version 0.3.1 --locked` | source build, no registry: `cmake -S c -B c/build && cmake --build c/build` (see [`c/README.md`](c/README.md)) | `npm install @enmaq/mdgl@0.3.1` (or `npx -p @enmaq/mdgl@0.3.1 mdgl play scene.mdgl`) | `pip install mdgl==0.3.1`, then `mdgl play FILE` |
 
 JavaScript is the compiled TypeScript in the same npm package, not an independent implementation. Library use: Go imports
-`github.com/enmaq/mdgl/go` (`go get github.com/enmaq/mdgl/go@v0.3.0`); Rust `cargo add mdgl@0.3.0`; JS/TS `require('@enmaq/mdgl')`.
+`github.com/enmaq/mdgl/go` (`go get github.com/enmaq/mdgl/go@v0.3.1`); Rust `cargo add mdgl@0.3.1`; JS/TS `require('@enmaq/mdgl')`.
 
-Provenance: the public git tags `v0.3.0` and `go/v0.3.0` retain the original source tree, while the registry packages carry corrected
+Provenance (0.3.0): in 0.3.0 the public git tags `v0.3.0` and `go/v0.3.0` retain the original source tree, while the registry packages carry corrected
 version-neutral metadata and README text (see [CHANGELOG.md](CHANGELOG.md)); code, API and version are unchanged.
 
 **Terminal player.** Animation is verified on Unix/POSIX only. Per-language limits, as each language README documents: C is POSIX only for
@@ -121,7 +179,7 @@ are listed in [`conformance/README.md`](conformance/README.md). C note: the libr
 skipped when `de_DE.UTF-8` is not installed.
 
 At 0.x only the latest minor is supported and nothing is promised stable before 1.0; supported builds are the ones in CI.
-The package version (`VERSION`, 0.3.0) is not the grammar version: the `mdgl 0.1` header is defined by [SPEC.md](SPEC.md) and does not change
+The package version (`VERSION`, 0.3.1) is not the grammar version: the `mdgl 0.1` header is defined by [SPEC.md](SPEC.md) and does not change
 with `VERSION`. See [RELEASING.md](RELEASING.md).
 
 ### Adapters

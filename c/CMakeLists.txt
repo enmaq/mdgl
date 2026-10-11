@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(mdgl VERSION 0.3.0 LANGUAGES C)
+project(mdgl VERSION 0.3.1 LANGUAGES C)
 add_library(mdgl mdgl.c mdgl_render.c mdgl_play.c)
 target_compile_definitions(mdgl PRIVATE _GNU_SOURCE)
 target_link_libraries(mdgl PUBLIC m)

@@ -231,8 +231,10 @@ class Grid {
   put(col: number, row: number, r: string, color: string, alpha: number): void {
     if (col < 0 || row < 0 || col >= this.w || row >= this.h || r === ' ' || alpha <= 0) return;
     const c = this.cells[row][col];
+    // source-over onto the cell's current colour: the glyph already there if any, else the (black) background
+    const dest = c.r !== ' ' ? c.fg : c.bg;
     c.r = r;
-    c.fg = alpha >= 1 ? color : blend(color, alpha, c.bg);
+    c.fg = alpha >= 1 ? color : blend(color, alpha, dest);
   }
 }
 const q9 = (v: number): number => Math.round(v * 1e9) / 1e9;

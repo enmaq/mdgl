@@ -5,7 +5,16 @@ All notable changes to MDGL. The format follows [Keep a Changelog](https://keepa
 
 ## [Unreleased]
 
-- Documentation only: final adopter and release documentation for the published 0.3.0 packages; no code, API or version change.
+## [0.3.1] - 2026-10-11
+
+### Added
+- Showcase example scenes `examples/neon-cube.mdgl`, `examples/kubernetes.mdgl` and `examples/llm.mdgl` (current 0.1 grammar), with preview GIFs and README adopter docs.
+- Launcher `scripts/example-media.py` (default `play`, unchanged: plays the three demos in a UTF-8 terminal with the Go adapter) gains `verify` and `export`, implemented in `scripts/example_media_export.py`: both build all five adapters in an isolated temp stage, check each scene through each adapter and compare every frame exactly (rune, fg, bg, `done`; the fallback frame separately), stopping at the first difference with a precise report and a non-zero exit; `export` then rasterises and encodes GIF/MP4 only if all five agree and writes a manifest of cell and sequence hashes plus tool and font versions. Encoded bytes are only reproducible with the same ffmpeg and font versions.
+- CI job `example-media-e2e` runs `export` and uploads the media, manifest and failure report as artifacts (read-only permissions, no commits).
+
+### Fixed
+- Opacity/fade colour blending now composites source-over onto the cell's current colour (the glyph colour already in the cell, else the background). The TypeScript adapter previously blended onto the background only and produced different `fg` values at fade frames (for example `neon-cube` at `time_ns` 33333333); found by the all-five frame comparison.
+- The timeline is evaluated on integer nanoseconds before elapsed/progress arithmetic: time, action begin and duration are quantized first, elapsed is an integer difference, then one floating-point division feeds the easing, so exact midpoints (progress 0.5) agree across implementations. Changed in Go (`go/eval`), Rust (`rust/src/eval.rs`), C (`c/mdgl_render.c`) and Python (`python/mdgl/evaluate.py`); clarified in `conformance/PROTOCOL.md` section 2.1. New regression tests cover this in Go, Rust, C, TypeScript and Python.
 
 ## [0.3.0] - 2026-10-10
 

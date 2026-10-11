@@ -61,6 +61,12 @@ for lex, good in [("5." + Z, 1), ("9007199254740991." + Z, 1), ("900719925474099
 one("v long zeros", '{"v":1.' + Z + ',"id":"x","op":"check","source":""}', lambda r: r["ok"] is True)
 one("v long zeros plus 1", '{"v":1.' + Z + '1,"id":"x","op":"check","source":""}', bad)
 one("width long zeros", '{"v":1,"id":"n","op":"frame","source":"scene width=8 height=1 fallback=end\\n","time_ns":0,"width":8.' + Z + ',"height":1}', lambda r: r["ok"] is True)
+# nanosecond-first progress through the adapter: exact midpoints
+GREEN = 'scene width=4 height=1 fallback=end\nactor a = text("A") at (0,0) color=green\n@2.4: a.fade(in, dur=0.8)\n'
+RED = 'scene width=4 height=1 fallback=end\nactor a = text("A") at (0,0)\n@8: a.color(to=red, dur=0.4)\n'
+for nm, src, ns, want in [("fade mid", GREEN, 2800000000, "#008000"), ("fade -1ns", GREEN, 2799999999, "#007f00"), ("fade +1ns", GREEN, 2800000001, "#008000"),
+                          ("color mid", RED, 8200000000, "red"), ("color -1ns", RED, 8199999999, "normal"), ("color +1ns", RED, 8200000001, "red")]:
+    one("ns progress " + nm, json.dumps({"v": 1, "id": "n", "op": "frame", "source": src, "time_ns": ns, "width": 4, "height": 1}), (lambda w: lambda r: r["cells"][0][0]["fg"] == w)(want))
 # versions
 one("v2", '{"v":2,"id":"e8","op":"check","source":""}', lambda r: err("unsupported_version")(r) and r["id"] == "e8")
 one("v 1.0", '{"v":1.0,"id":"x","op":"check","source":""}', lambda r: r["ok"] is True)

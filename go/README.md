@@ -2,16 +2,16 @@
 
 `github.com/enmaq/mdgl/go` is the Go module of MDGL, a small animation language
 written in Markdown that renders as terminal cells. It parses and checks a
-scene, evaluates it at any time, and returns a grid of cells. The latest published tag is
-`v0.3.0` (nested tag `go/v0.3.0`).
+scene, evaluates it at any time, and returns a grid of cells. This is release 0.3.1
+(tag `v0.3.1`, nested tag `go/v0.3.1`).
 
 ## Install
 
-Published (0.3.0):
+Version 0.3.1:
 
 ```
-go get github.com/enmaq/mdgl/go@v0.3.0
-go install github.com/enmaq/mdgl/go/cmd/mdgl@v0.3.0
+go get github.com/enmaq/mdgl/go@v0.3.1
+go install github.com/enmaq/mdgl/go/cmd/mdgl@v0.3.1
 ```
 
 From source: in a checkout, `cd v/mdgl/go && go install ./cmd/mdgl`.
@@ -89,5 +89,5 @@ python3 scripts/conformance-runner.py --adapter '<out>/mdgl-conformance'
 
 ## Status
 
-All five languages (Go, Rust, C, JS/TS, Python) ship full implementations at 0.3.0. Rendering is to terminal
+All five languages (Go, Rust, C, JS/TS, Python) ship full implementations at 0.3.1. Rendering is to terminal
 cells only; a browser renderer is future work.

@@ -88,7 +88,19 @@ Worked example: `"1.0"` -> 1 000 000 000; `".5"` -> 500 000 000; `"+0.50"` -> 50
 **Canonical short form is output only.** The runner EMITS decimals in its own JSON reports and examples in a canonical
 short form (no sign, no `s`, no leading zeros, no trailing fractional zeros: `"0.5"`, `"1"`). That is not a restriction
 on fixture input: the same fixture-time rule above applies to every legacy `.expect` and `.obs.json` time.
-Adapters turn `time_ns` into their evaluator's time using exact integer arithmetic or `float64(time_ns)/1e9`.
+**Canonical timeline arithmetic (clarification of SPEC "rounded to nanoseconds" and "Color actions still switch at eased
+progress >= 0.5").** An evaluator MAY keep floating-point seconds in its public APIs and scalar storage, provided the values are quantized to
+integer nanoseconds BEFORE any arithmetic: the request `time_ns`, every action start, every duration and the period are
+quantized first (rounding as above), the elapsed time is the integer difference `time_ns - start_ns`, and only then is the
+progress computed as one floating-point division `elapsed_ns / duration_ns`, followed by the existing easing. No epsilon is applied: progress exactly `0.5` is `>= 0.5`, and a fade channel of `127.5`
+rounds to nearest, half up, i.e. `128`. The earlier allowance to convert with `float64(time_ns)/1e9` and subtract float
+seconds permits drift at exact boundaries and is superseded by this integer-nanosecond-first calculation; adapters must give the same cell for the same `time_ns`. This clarification does not require an engine to migrate every
+internal period/repeat representation to integers, only that results equal this calculation.
+Worked midpoints (linear progress = elapsed_ns / duration_ns): an action beginning at `8` with duration `0.4`, requested at
+`time_ns = 8200000000`, has elapsed `200000000` and progress `0.5`, so a colour action has switched; a `green` actor fading in
+(opacity, linear easing) from `2.4` with duration `0.8`, requested at `time_ns = 2800000000`, has progress `0.5` and renders
+`#008000` (green channel `127.5` rounds half up to `128`). One nanosecond earlier (`8199999999` and `2799999999`) the progress
+is just below `0.5`, so the colour has not switched and the fade renders `#007f00` (channel `127.4999...` rounds to `127`).
 
 ## 3. Responses
 

@@ -162,6 +162,7 @@ static astate_t *eval_at(const mdgl_scene_t *sc, double time) {
     char *inited = calloc((size_t)(na ? na : 1) * 6, 1);
     if (!st || !composed || !order || !inited) { free(st); free(composed); free(order); free(inited); return NULL; }
     time = fmax(0, fmin(sc->period, time));
+    long long tns = ns_of(time);
     for (int i = 0; i < na; i++) {
         const mdgl_actor_t *a = &sc->actors[i];
         double w = sc->width, h = sc->height;
@@ -181,17 +182,20 @@ static astate_t *eval_at(const mdgl_scene_t *sc, double time) {
         const mdgl_actor_t *actor = &sc->actors[ai];
         const char *dir0 = mdgl_i_argv_get(ac->args, ac->nargs, "0")->text;
         int is_in = !strcmp(dir0, "in");
+        long long bns = ns_of(ac->begin), dns = ns_of(ac->duration);
         char *flag = &inited[ai * 6 + prop_id(ac->property)];
         if (!*flag) {
             *flag = 1;
             if (!strcmp(ac->verb, "fade") && is_in) tg->opacity = 0;
             if (!strcmp(ac->verb, "type") || (!strcmp(ac->verb, "wipe") && is_in)) tg->reveal = 0;
-            if (!strcmp(ac->verb, "slide") && is_in && time < ac->begin) outside(sc, tg, actor, mdgl_i_argv_get(ac->args, ac->nargs, "to")->text, &tg->x, &tg->y);
+            if (!strcmp(ac->verb, "slide") && is_in && tns < bns) outside(sc, tg, actor, mdgl_i_argv_get(ac->args, ac->nargs, "to")->text, &tg->x, &tg->y);
         }
-        if (time < ac->begin) continue;
+        if (tns < bns) continue;
+        /* nanosecond-first: begin and duration are integer ns, the elapsed subtraction and the end test are
+         * exact integers, then ONE float ratio feeds the easing (no epsilon, no float-seconds drift). */
         double progress = 1;
-        if (ac->duration > 0) progress = fmin(1, (time - ac->begin) / ac->duration);
-        if (time >= mdgl_i_gotime(ac->begin + ac->duration)) progress = 1;
+        if (dns > 0) progress = fmin(1, (double)(tns - bns) / (double)dns);
+        if (tns >= bns + dns) progress = 1;
         double e = ease(ac->ease, progress);
         const char *v = ac->verb;
         if (!strcmp(v, "fade")) tg->opacity = is_in ? e : 1 - e;
@@ -213,7 +217,7 @@ static astate_t *eval_at(const mdgl_scene_t *sc, double time) {
             if (count == 0) tg->reveal = 1;
             else {
                 /* exact integer floor of elapsed/per_char on nanoseconds: no epsilon */
-                long long per = ns_of(mdgl_i_gotime(num0(mdgl_i_argv_get(ac->args, ac->nargs, "per_char")))), el = ns_of(time) - ns_of(ac->begin);
+                long long per = ns_of(mdgl_i_gotime(num0(mdgl_i_argv_get(ac->args, ac->nargs, "per_char")))), el = tns - bns;
                 double n = per > 0 ? (double)(el / per) : count;
                 tg->reveal = fmin(count, n) / count;
             }

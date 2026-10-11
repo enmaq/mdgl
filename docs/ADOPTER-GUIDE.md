@@ -20,8 +20,8 @@ The only renderer profile is terminal cells (braille dots, 2x4 per cell), availa
 
 | Item | State |
 |---|---|
-| Go module `github.com/enmaq/mdgl/go`, tags `v0.3.0` and `go/v0.3.0` | Full implementation (parser, checker, evaluator, renderer, adapter, player). |
-| npm `@enmaq/mdgl`, crates.io `mdgl`, PyPI `mdgl` at 0.3.0 | Full implementations with adapters and terminal players; JS and TypeScript are one implementation. |
+| Go module `github.com/enmaq/mdgl/go`, tags `v0.3.1` and `go/v0.3.1` | Full implementation (parser, checker, evaluator, renderer, adapter, player). |
+| npm `@enmaq/mdgl`, crates.io `mdgl`, PyPI `mdgl` at 0.3.1 | Full implementations with adapters and terminal players; JS and TypeScript are one implementation. |
 | C | Full implementation with adapter and player; source build via cmake, no registry (see [`c/README.md`](../c/README.md)). |
 
 The git tags retain the original source tree; the registry packages carry corrected version-neutral metadata and README text (see [CHANGELOG.md](../CHANGELOG.md)); code, API and version are unchanged.
@@ -141,7 +141,7 @@ the time and size, and the output each reading gives. Typos, messages and bugs n
 - C: builds with `_GNU_SOURCE`; its locale-dependent test is skipped when `de_DE.UTF-8` is not installed.
   Windows/MSVC is untested.
 - No browser renderer. At 0.x only the latest minor is supported and nothing is stable before 1.0. The package
-  `VERSION` (0.3.0) is not the grammar version (`mdgl 0.1`).
+  `VERSION` (0.3.1) is not the grammar version (`mdgl 0.1`).
 - No media type is registered, and nothing here is endorsed by a standards body.
 
 ## 9. Checklists
@@ -154,7 +154,7 @@ the time and size, and the output each reading gives. Typos, messages and bugs n
 - [ ] State which suite revision and gaps you pass; claim nothing beyond the verdict.
 
 **Embedder**
-- [ ] Use a published 0.3.0 package or a later validated release (see the table above).
+- [ ] Use a 0.3.1 package or a later validated release (see the table above).
 - [ ] Check untrusted input first; honour the limits; never play rejected input.
 - [ ] Honour both `Color` and `Background`.
 - [ ] Use the fallback frame for redirected output and reduced motion, with no timer.

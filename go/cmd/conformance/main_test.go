@@ -66,6 +66,34 @@ func TestFrameCellsColorsAndDone(t *testing.T) {
 	}
 }
 
+func TestFrameNanosecondProgressBoundaries(t *testing.T) {
+	source := "scene width=4 height=1 period=12 fallback=end\nactor a = text(\"A\") at (0,0) color=green\n@2.4: a.fade(in,dur=0.8)\n@8: a.color(to=red,dur=0.4)\n"
+	for _, sample := range []struct {
+		name string
+		time string
+		want string
+	}{
+		{"fade before midpoint", "2799999999", "#007f00"},
+		{"fade midpoint", "2800000000", "#008000"},
+		{"fade after midpoint", "2800000001", "#008000"},
+		{"color before midpoint", "8199999999", "green"},
+		{"color midpoint", "8200000000", "red"},
+		{"color after midpoint", "8200000001", "red"},
+		{"color end", "8400000000", "red"},
+		{"color frozen after end", "8400000001", "red"},
+	} {
+		t.Run(sample.name, func(t *testing.T) {
+			result := process(requestJSON(source, sample.time, ""))
+			if !result.OK || result.Done == nil || *result.Done {
+				t.Fatalf("frame response at %s ns = %+v", sample.time, result)
+			}
+			if got := result.Cells[0][0].FG; got != sample.want {
+				t.Fatalf("frame color at %s ns = %q, want %q", sample.time, got, sample.want)
+			}
+		})
+	}
+}
+
 func TestFallbackOmitsDoneAndIgnoresTime(t *testing.T) {
 	result := process([]byte(fmt.Sprintf(`{"v":1,"id":"f","op":"frame","source":%q,"width":4,"height":1,"fallback":true,"time_ns":"ignored"}`, staticSource)))
 	if !result.OK || result.Done != nil {

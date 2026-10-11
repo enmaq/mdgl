@@ -34,6 +34,7 @@ func Frame(scene *model.Scene, time float64) model.State {
 }
 func At(scene *model.Scene, time float64) model.State {
 	time = math.Max(0, math.Min(scene.Period, time))
+	timeNS := nanoseconds(time)
 	state := model.State{Width: scene.Width, Height: scene.Height}
 	names := map[string]int{}
 	for index, actor := range scene.Actors {
@@ -61,18 +62,20 @@ func At(scene *model.Scene, time float64) model.State {
 			if action.Verb == "type" || action.Verb == "wipe" && action.Args["0"].Text == "in" {
 				target.Reveal = 0
 			}
-			if action.Verb == "slide" && action.Args["0"].Text == "in" && time < action.Begin {
+			if action.Verb == "slide" && action.Args["0"].Text == "in" && timeNS < nanoseconds(action.Begin) {
 				target.X, target.Y = outside(scene, *target, action.Args["to"].Text)
 			}
 		}
-		if time < action.Begin {
+		beginNS := nanoseconds(action.Begin)
+		durationNS := nanoseconds(action.Duration)
+		if timeNS < beginNS {
 			continue
 		}
 		progress := 1.0
-		if action.Duration > 0 {
-			progress = math.Min(1, (time-action.Begin)/action.Duration)
+		if durationNS > 0 {
+			progress = math.Min(1, float64(timeNS-beginNS)/float64(durationNS))
 		}
-		if time >= model.Time(action.Begin+action.Duration) {
+		if timeNS >= beginNS+durationNS {
 			progress = 1
 		}
 		eased := Ease(action.Ease, progress)

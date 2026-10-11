@@ -1,6 +1,6 @@
 // @enmaq/mdgl: MDGL 0.1 parser and checker (development tree; evaluator and
 // rendering are not implemented yet). Spec: ../SPEC.md
-export const VERSION: string = '0.3.0';
+export const VERSION: string = '0.3.1';
 export { check, checkDocument, parseChecked } from './check';
 export type { CheckedAction, CheckedDocument, CheckedScene, Fallback, ParseResult } from './check';
 export { parse } from './parse';

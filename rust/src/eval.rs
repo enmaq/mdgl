@@ -142,6 +142,9 @@ fn outside(scene: &Scene, st: &ActorState, dir: &str) -> (f64, f64) {
 /// Scene state at simple-timeline time `t` (clamped to `[0, period]`).
 pub fn at(scene: &Scene, t: f64) -> State {
     let t = t.clamp(0.0, scene.period);
+    // Quantize time, begin and duration to integer nanoseconds before any subtraction.
+    let q = |x: f64| (x * 1e9).round() as i64;
+    let t_ns = q(t);
     let idx = |n: &str| scene.actors.iter().position(|a| a.name == n).unwrap();
     let mut st: Vec<ActorState> = scene
         .actors
@@ -168,18 +171,18 @@ pub fn at(scene: &Scene, t: f64) -> State {
             if ac.verb == "type" || ac.verb == "wipe" && dir_in {
                 st[ti].reveal = 0.0;
             }
-            if ac.verb == "slide" && dir_in && t < ac.begin {
+            if ac.verb == "slide" && dir_in && t_ns < q(ac.begin) {
                 let (x, y) = outside(scene, &st[ti], &ac.args["to"].text);
                 (st[ti].x, st[ti].y) = (x, y);
             }
         }
-        if t < ac.begin {
+        let (begin_ns, dur_ns) = (q(ac.begin), q(ac.duration));
+        if t_ns < begin_ns {
             continue;
         }
-        let mut p = if ac.duration > 0.0 { ((t - ac.begin) / ac.duration).min(1.0) } else { 1.0 };
-        if t >= time(ac.begin + ac.duration) {
-            p = 1.0;
-        }
+        // One float division of exact integers: the linear midpoint is exactly 0.5.
+        let elapsed_ns = t_ns - begin_ns;
+        let p = if t_ns >= begin_ns + dur_ns || dur_ns <= 0 { 1.0 } else { elapsed_ns as f64 / dur_ns as f64 };
         let e = ease(&ac.ease, p);
         let actor = &scene.actors[ti];
         match ac.verb.as_str() {
@@ -204,9 +207,8 @@ pub fn at(scene: &Scene, t: f64) -> State {
             "type" => {
                 let n = crate::checker::glyphs(&actor.text).len() as f64;
                 // Exact integer-nanosecond division: floor(elapsed / per_char) clusters.
-                let ns = |s: f64| (s * 1e9).round();
-                let per = ns(number(ac.args.get("per_char"))).max(1.0);
-                st[ti].reveal = if n == 0.0 { 1.0 } else { n.min((ns(t - ac.begin) / per).floor()) / n };
+                let per = (q(number(ac.args.get("per_char"))) as f64).max(1.0);
+                st[ti].reveal = if n == 0.0 { 1.0 } else { n.min(((t_ns - begin_ns) as f64 / per).floor()) / n };
             }
             "wipe" => st[ti].reveal = if dir_in { e } else { 1.0 - e },
             "blink" => {

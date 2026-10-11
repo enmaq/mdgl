@@ -68,6 +68,38 @@ func TestColorsEasingAndZ(t *testing.T) {
 		t.Fatal("color did not freeze")
 	}
 }
+
+func TestNanosecondProgressBoundaries(t *testing.T) {
+	scene := mustScene(t, "scene width=2 height=1 period=12 fallback=end\nactor a = text(\"A\") at (0,0) color=green\n@2.4: a.fade(in,dur=0.8)\n@8: a.color(to=red,dur=0.4)\n")
+	for _, sample := range []struct {
+		name string
+		time float64
+		want string
+	}{
+		{"fade before midpoint", 2.8 - 1e-9, "#007f00"},
+		{"fade midpoint", 2.8, "#008000"},
+		{"fade after midpoint", 2.8 + 1e-9, "#008000"},
+		{"color before midpoint", 8.2 - 1e-9, "green"},
+		{"color midpoint", 8.2, "red"},
+		{"color after midpoint", 8.2 + 1e-9, "red"},
+		{"color end", 8.4, "red"},
+		{"color frozen after end", 8.4 + 1e-9, "red"},
+	} {
+		t.Run(sample.name, func(t *testing.T) {
+			if got := scene.Frame(sample.time, 2, 1)[0][0].Color; got != sample.want {
+				t.Fatalf("Frame(%0.9f) color = %q, want %q", sample.time, got, sample.want)
+			}
+		})
+	}
+	nonlinear := mustScene(t, "scene width=2 height=1 period=12 fallback=end\nactor a = text(\"A\") at (0,0) color=green\n@2.4: a.fade(in,dur=0.8,ease=ease-in)\n@8: a.color(to=red,dur=0.4,ease=ease-in)\n")
+	if got := nonlinear.Frame(2.8, 2, 1)[0][0].Color; got != "#005000" {
+		t.Fatalf("ease-in fade midpoint color = %q, want #005000 (TS midpoint)", got)
+	}
+	if got := nonlinear.Frame(8.2, 2, 1)[0][0].Color; got != "green" {
+		t.Fatalf("ease-in color midpoint = %q, want green (TS midpoint)", got)
+	}
+}
+
 func TestInvalidInputs(t *testing.T) {
 	cases := []string{
 		"scene width=8 height=1 fallback=end fps=31",

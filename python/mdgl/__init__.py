@@ -12,7 +12,7 @@ from .parser import parse
 from .animation import Animation, Frame, compile
 from .render import Cell
 
-__version__ = "0.3.0"
+__version__ = "0.3.1"
 __all__ = ["check", "parse", "load", "check_scene", "MdglError", "Scene", "Actor", "Action",
            "Pos", "Value", "Animation", "Frame", "Cell", "compile", "__version__"]
 

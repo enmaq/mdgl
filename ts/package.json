@@ -1,6 +1,6 @@
 {
   "name": "@enmaq/mdgl",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "MDGL 0.1 parser, checker, evaluator, terminal-cell renderer and terminal player.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
